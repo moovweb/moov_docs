@@ -1,0 +1,27 @@
+{
+  "name": "moov_docs",
+  "version": "1.0.0",
+  "description": "Automatic Documentation Generator for Moov Modules",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jsdoc": "bash ./util/npm_jsdoc.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moovweb/moov_docs"
+  },
+  "author": "Moovweb",
+  "license": "proprietary",
+  "bugs": {
+    "url": "https://github.com/moovweb/moov_docs/issues"
+  },
+  "homepage": "https://github.com/moovweb/moov_docs",
+  "dependencies": {
+    "moov_bundler": "moovweb/moov_bundler#pfst-726-jsdoc",
+    "moov_stdlib": "moovweb/moov_stdlib#pfst-726-jsdoc",
+    "moov_perf": "moovweb/moov_perf#pfst-726-jsdoc",
+    "moov_cheerio": "moovweb/moov_cheerio#pfst-726-jsdoc",
+    "moov_cache": "moovweb/moov_cache#pfst-726-jsdoc"
+  }
+}
