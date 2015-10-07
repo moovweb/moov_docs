@@ -1,0 +1,78 @@
+<body>
+
+<div data-section="accordion" id="content-nav">
+  <section>
+      <ul class="doc-sidebar" data-section-content data-section="accordion" id="content-sidebar"><section><a href="#" data-section-title>Classes</a><ul data-section-content data-section="accordion" ><section><a href="Perf" class="" data_section_title">Perf</a><ul class='methods' data-section-content data-section='accordion'><li data-type='method'><a href="Perf#.selector#optimizeImg">selector#optimizeImg</a></li><li data-type='method'><a href="Perf#.selector#quality">selector#quality</a></li><li data-type='method'><a href="Perf#blacklistContains">blacklistContains</a></li><li data-type='method'><a href="Perf#ignore">ignore</a></li><li data-type='method'><a href="Perf#ignored">ignored</a></li><li data-type='method'><a href="Perf#optimizedAttrs">optimizedAttrs</a></li><li data-type='method'><a href="Perf#optimizeImageAttribs">optimizeImageAttribs</a></li></ul></section></ul></section><section><a href="#" data-section-title>Modules</a><ul data-section-content data-section="accordion" ><section><a href="module_moov_perf" class="" data_section_title">moov_perf</a></section></ul></section></ul>
+  </section>
+</div>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>moov_perf</h1><p>Javascript Performance Module</p>
+<h2>Quick Start</h2><p><code>npm install</code></p>
+<p>This will build the Node modules that moov_stdlib depends on and everything will be set up locally under the moov_stdlib folder. The npm-shrinkwrap.json file is used to version lock all dependencies.</p>
+<h2>Example usage</h2><p>Require perf</p>
+<p><code>const moov_perf = require(&quot;moov_perf&quot;);</code></p>
+<p>Perf extends an existing selector engine prototype. For Moovweb Optimize, we use our modified version of Cheerio.</p>
+<p><code>const cheerio = require(&quot;moov_cheerio&quot;).cheerio;</code></p>
+<p>When instantiating the perf object, Pass the prototype of your selector engine (for moov_cheerio, this is accessible via the cheerio helper). This gives you access to the perf functions while modifying a selection, as well as a ignorelist for domains you specifically do not wish to optimize while performing image optimizations.</p>
+<p><code>const perf = new moov_perf(cheerio)</code></p>
+<h2>Api</h2><h3>cheerio.optimizeImg()</h3><p>Rewrites image source tags to point to the Moovweb Image Optimizer.</p>
+<pre class="prettyprint source"><code>let html = &quot;&lt;img src=&quot;http://www.moovweb.com/selfie.jpg&quot;>&lt;/img>&quot;&quot;
+let $ = cheerio.load(html);
+let args = {
+    height: 666,
+    width: 777,
+    quality: 88,
+    format: 'webp'
+};
+let imgs = $('img').optimizeImg(args);
+console.log(imgs[0].attribs.src)
+=> &quot;//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&linkEncoded=0&width=777&height=666&preserve_aspect_ratio=1&quality=88&format=webp&quot;</code></pre><h3>cheerio.Quality</h3><p>Apply the quality data attribute to a selection of nodes</p>
+<pre class="prettyprint source"><code>const perf = new moov_perf(cheerio)
+let $ = cheerio.load('&lt;img src=&quot;/selfie.jpg&quot;>&lt;/img>');
+$('img').quality('88');</code></pre><p>Quality can be tuned to optimize performance of images without dramatically reducing fidelity.</p>
+<h3>perf.ignore()</h3><p>Add a domain to the ignore list. When perf.selector selects an image tag, it will not rewrite the image source for any images included in the ignored list.</p>
+<pre class="prettyprint source"><code>perf.ignore('http://www.moovweb.com/');</code></pre><h3>perf.ignored()</h3><p>Returns a list of all domains currently being ignored.</p>
+<pre class="prettyprint source"><code>perf.ignored()
+=> 'http://www.moovweb.com/'</code></pre><h2>Run tests</h2><p><code>npm test</code></p>
+<h2>Run Locally via Node CLI</h2><p><code>node --harmony</code></p>
+<p><code>&gt; var perf = require(&quot;./main.js&quot;);</code>
+<code>&gt; var selector = require(&quot;moov_cheerio&quot;).cheerio;</code>
+<code>&gt; var my_perf = new perf(selector);</code></p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at Mon Oct 12 2015 10:07:17 GMT-0700 (PDT)
+</footer>
+
+<script>prettyPrint();</script>
+</body>

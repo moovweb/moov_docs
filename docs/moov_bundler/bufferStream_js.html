@@ -1,0 +1,76 @@
+<body>
+
+<div data-section="accordion" id="content-nav">
+  <section>
+      <ul class="doc-sidebar" data-section-content data-section="accordion" id="content-sidebar"><section><a href="#" data-section-title>Classes</a><ul data-section-content data-section="accordion" ><section><a href="module_bufferStream_BufferStream" class="" data_section_title">BufferStream</a><ul class='methods' data-section-content data-section='accordion'><li data-type='method'><a href="module_bufferStream_BufferStream#_read">_read</a></li></ul><a href="module_bundler_Bundler" class="" data_section_title">Bundler</a><ul class='methods' data-section-content data-section='accordion'><li data-type='method'><a href="module_bundler_Bundler#bundle">bundle</a></li></ul></section></ul></section><section><a href="#" data-section-title>Modules</a><ul data-section-content data-section="accordion" ><section><a href="module_bufferStream" class="" data_section_title">bufferStream</a><a href="module_bundler" class="" data_section_title">bundler</a><a href="module_moov_bundler" class="" data_section_title">moov_bundler</a><ul class='methods' data-section-content data-section='accordion'><li data-type='method'><a href="module_moov_bundler#.bundle">bundle</a></li><li data-type='method'><a href="module_moov_bundler#.watch">watch</a></li></ul></section></ul></section></ul>
+  </section>
+</div>
+
+<div id="main">
+    
+    <h1 class="page-title">bufferStream.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+/**
+ * @module bufferStream
+ */
+
+/* Wraps a buffer in a stream interface */
+
+var Readable = require('stream').Readable;
+var util = require('util');
+
+/**
+ * @class
+ * @param {Object} data Data.
+ * @param {Object} opt Options.
+ */
+function BufferStream(data, opt) {
+    Readable.call(this, opt);
+    this.buffer = data;
+    this.done = false;
+}
+
+util.inherits(BufferStream, Readable);
+
+/**
+ * Read data.
+ */
+BufferStream.prototype._read = function() {
+    if (this.done) {
+      this.push(null);
+      return;
+    }
+    this.push(this.buffer);
+    this.done = true;
+};
+
+module.exports = {
+  BufferStream: BufferStream
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at Mon Oct 12 2015 10:07:15 GMT-0700 (PDT)
+</footer>
+
+<script>prettyPrint();</script>
+</body>

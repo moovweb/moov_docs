@@ -1,0 +1,24 @@
+<body>
+
+<div data-section="accordion" id="content-nav">
+  <section>
+      <?js= this.nav ?>
+  </section>
+</div>
+
+<div id="main">
+    <?js if (title != 'Home') { ?>
+    <h1 class="page-title"><?js= title ?></h1>
+    <?js } ?>
+
+    <?js= content ?>
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at <?js= (new Date()) ?>
+</footer>
+
+<script>prettyPrint();</script>
+</body>

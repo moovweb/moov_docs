@@ -1,0 +1,653 @@
+<body>
+
+<div data-section="accordion" id="content-nav">
+  <section>
+      <ul class="doc-sidebar" data-section-content data-section="accordion" id="content-sidebar"><section><a href="#" data-section-title>Classes</a><ul data-section-content data-section="accordion" ><section><a href="module_moov_cheerio_cheerio" class="" data_section_title">cheerio</a><ul class='methods' data-section-content data-section='accordion'><li data-type='method'><a href="module_moov_cheerio_cheerio#appendText">appendText</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#attributes">attributes</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#dumpTable">dumpTable</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#dumpTables">dumpTables</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#name">name</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#prependText">prependText</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#removeAttrs">removeAttrs</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#removeIfEmpty">removeIfEmpty</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#removeTextNodes">removeTextNodes</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#replace">replace</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#revertDumpTable">revertDumpTable</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#setLower">setLower</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#setText">setText</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#setUpper">setUpper</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#trim">trim</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#unwrap">unwrap</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#wrap">wrap</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#wrapInner">wrapInner</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#wrapNonemptyTextChildren">wrapNonemptyTextChildren</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#wrapTextChildren">wrapTextChildren</a></li><li data-type='method'><a href="module_moov_cheerio_cheerio#wrapTogether">wrapTogether</a></li></ul></section></ul></section><section><a href="#" data-section-title>Modules</a><ul data-section-content data-section="accordion" ><section><a href="module_moov_cheerio" class="" data_section_title">moov_cheerio</a></section></ul></section><section><a href="#" data-section-title>Global</a><ul data-section-content data-section="accordion"><li><a href="global#tag">tag</a></li><li><a href="global#txt">txt</a></li></ul></section></ul>
+  </section>
+</div>
+
+<div id="main">
+    
+    <h1 class="page-title">moov_cheerio.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/* globals tag, txt */
+'use strict';
+
+/**
+ * @module moov_cheerio
+ */
+
+/**
+ * @class
+ */
+const cheerio = require('cheerio');
+
+cheerio.prototype.options.withDomLvl1 = false;
+
+const slice = Array.prototype.slice;
+
+function copy(node, children, next, prev, parent) {
+    return {
+        // __proto__: node.__proto__, // uncomment if withDomLvl1 is true
+        type: node.type,
+        name: node.name,
+        attribs: node.attribs,
+        children: children,
+        next: next,
+        prev: prev,
+        parent: parent
+    };
+}
+
+/**
+ * @global
+ * @param {string} name Name.
+ * @param {Array.&lt;string>} attribs Attributes.
+ * @param {string} content Content.
+ */
+global.tag = function(name, attribs, content) {
+    let type = name === 'script' || name === 'style' ? name : 'tag';
+    return {
+        // for some reason &lt;script> and &lt;style> aren't exactly elements in htmlparser2
+        // __proto__: type == 'tag' ? ElementPrototype : NodePrototype, // uncomment if withDomLvl1 is true
+        type: type,
+        name: name,
+        attribs: attribs || {},
+        children: content ? [txt(content)] : [],
+        next: null,
+        prev: null,
+        parent: null
+    };
+};
+
+/**
+ * @global
+ * @param {string} content Content.
+ */
+global.txt = function(content) {
+    return {
+        // __proto__: NodePrototype, // uncomment if withDomLvl1 is true
+        data: content,
+        type: 'text',
+        next: null,
+        prev: null,
+        parent: null
+    };
+};
+/**
+ * Replace the old value of the attribute by a new value.
+ * @param {string} attr Attributes.
+ * @param {string} oldval Old value.
+ * @param {string} newval New value.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.replace = function(attr, oldVal, newVal) {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        if (this[i].type === 'tag') {
+            if (this[i].attribs[attr] !== undefined) {
+                this[i].attribs[attr] = this[i].attribs[attr].replace(oldVal, newVal);
+            }
+        }
+    }
+    return this;
+};
+
+// rename tag e.g. $('div').name('span')
+/**
+ * Rename tag.
+ * @param {string} tagName New tag name.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('div').name('span')
+ *
+ */
+cheerio.prototype.name = function(tagName) {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        this[i].name = tagName;
+    }
+    return this;
+};
+
+// remove all attributes e.g. $('div').removeAttrs()
+/**
+ * Remove all attributes.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('div').removeAttrs()
+ *
+ */
+cheerio.prototype.removeAttrs = function() {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        this[i].attribs = {};
+    }
+    return this;
+};
+
+// wrap all text children e.g. $('div').wrapTextChildren('span', {class: 'class'})
+// Ignores empty text children if ignore_empty is set to true
+/**
+ * Wrap all text children.
+ * @param {Object} node Node.
+ * @param {boolean} ignore_empty Set it to true when ignoring empty text children.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('div').wrapTextChildren('span', {class: 'class'})
+ *
+ */
+cheerio.prototype.wrapTextChildren = function(node, ignore_empty) {
+    if (typeof node !== 'object') {
+        node = tag.apply(null, arguments);
+    }
+
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i], children = elem.children;
+        for (let i = 0, len = children.length; i &lt; len; i++) {
+            let child = children[i];
+            if (child.type === 'text') {
+                if ( (child.data === null || child.data.trim() === '') &amp;&amp; ignore_empty === true) {
+                    // if empty and we are ignoring empty, do nothing
+                } else {
+                    let clone = copy(node, [child], child.next, child.prev, child.parent);
+                    let next = child.next, prev = child.prev, root = child.root;
+                    if (next) {
+                        next.prev = clone;
+                    }
+                    if (prev) {
+                        prev.next = clone;
+                    }
+                    if (root) {
+                        clone.root = root;
+                        child.root = null;
+                    }
+                    child.next = child.prev = null;
+                    child.parent = clone;
+                    children[i] = clone;
+                }
+            }
+        }
+    }
+
+    return this;
+};
+
+// wrap all elements e.g. $('span').wrap('div', {class: 'class'})
+/**
+ * Wrap all elements.
+ * @param {Object} node Node.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('span').wrap('div', {class: 'class'})
+ *
+ */
+cheerio.prototype.wrap = function(node) {
+    if (typeof node !== 'object') {
+        node = tag.apply(null, arguments);
+    }
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i], parent = elem.parent;
+        let siblings = parent ? parent.children : elem.root.children;
+        let clone = copy(node, [elem], elem.next, elem.prev, elem.parent);
+        let next = elem.next, prev = elem.prev, root = elem.root;
+        if (next) {
+            next.prev = clone;
+        }
+        if (prev) {
+            prev.next = clone;
+        }
+        if (root) {
+            clone.root = root;
+            elem.root = null;
+        }
+        elem.next = elem.prev = null;
+        elem.parent = clone;
+        siblings[siblings.indexOf(elem)] = clone;
+    }
+    return this;
+};
+
+// wrap inner contents of elements e.g. $('section').wrapInner('div', {class: 'class'})
+/**
+ * Wrap inner contents of elements.
+ * @param {Object} node Node.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('section').wrapInner('div', {class: 'class'})
+ *
+ */
+cheerio.prototype.wrapInner = function(node) {
+    if (typeof node !== 'object') {
+        node = tag.apply(null, arguments);
+    }
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i], children = elem.children;
+        let clone = copy(node, children, null, null, elem);
+        for (let i = 0, len = children.length; i &lt; len; i++) {
+            children[i].parent = clone;
+        }
+        elem.children = [clone];
+    }
+    return this;
+};
+
+// wrap together elements under one node e.g. $('span').wrapTogether('div', {class: 'class'})
+// node will inserted before the first element
+/**
+ * Wrap together elements under one node and node will inserted before the first element.
+ * @param {Object} node Node.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('span').wrapTogether('div', {class: 'class'})
+ *
+ */
+cheerio.prototype.wrapTogether = function(node) {
+    if (typeof node !== 'object') {
+        node = tag.apply(null, arguments);
+    }
+    if (this.length === 0) {
+        return this;
+    }
+    let first = this[0],
+        parent = first.parent,
+        siblings = parent.children,
+        root = first.root;
+    first.parent = {};
+    let clone = copy(node, slice.call(this), first.next, first.prev, parent);
+    if (root) {
+        clone.root = root;
+    }
+
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i],
+            next = elem.next,
+            prev = elem.prev,
+            parent = elem.parent,
+            siblings = parent ? parent.children : elem.root.children,
+            root = elem.root;
+        if (next) {
+            next.prev = prev;
+        }
+        if (prev) {
+            prev.next = next;
+        }
+        elem.next = this[i+1] || null;
+        elem.prev = this[i-1] || null;
+        elem.parent = clone;
+        if (root) {
+            elem.root = null;
+        }
+        if (siblings) {
+            siblings.splice(siblings.indexOf(elem), 1);
+        }
+    }
+    siblings[siblings.indexOf(first)] = clone;
+    return this;
+};
+
+/**
+ * Unwrap elements.
+ */
+cheerio.prototype.unwrap = function() {
+    var copies = this.children();
+    this.replaceWith(copies);
+};
+
+// Update each selected node with a set of attributes
+// ex $('a').attributes({'data-ur-toggler-component': 'button', 'class': 'mw-button'})
+// If an attribute in the input is undefined, it will remove that attribute from the selected nodes
+/**
+ * Update each selected node with a set of attributes.
+ * If an attribute in the input is undefined, it will remove that attribute from the selected nodes.
+ * @param {Array.&lt;string>} attributes Attributes.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('a').attributes({'data-ur-toggler-component': 'button', 'class': 'mw-button'})
+ *
+ */
+cheerio.prototype.attributes = function(attributes) {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        for (let attr in attributes) {
+            if (attributes[attr] !== undefined) {
+                this[i].attribs[attr] = attributes[attr];
+            }
+            else {
+                delete this[i].attribs[attr];
+            }
+        }
+    }
+    return this;
+};
+
+// Remove text nodes from within a selection
+// ex &lt;span>&lt;div>&lt;/div>blah&lt;div>&lt;/div>blah&lt;/span>
+// $('span').removeTextnodes
+// => &lt;span>&lt;div>&lt;/div>&lt;div>&lt;/div>&lt;/span>
+
+/**
+ * Remove text nodes from within a selection.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('span').removeTextnodes()
+ *
+ */
+cheerio.prototype.removeTextNodes = function() {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i], children = elem.children;
+        if (elem.type === 'text') {
+            elem.remove();
+        }
+        for (let i = 0, len = children.length; i &lt; len; i++) {
+            let child = children[i];
+            if (child !== undefined &amp;&amp; child.type === 'text') {
+                if (child.next !== null) {
+                    let next_child = child.next;
+                    next_child.prev = child.prev;
+                }
+                elem.children.splice(i,1);
+            }
+        }
+    }
+    return this;
+};
+
+// Trim whitespace found within selection
+// Only looks one level deep for whitespace, nested text nodes are untouched
+// ex '&lt;div     >     &lt;a     >        &lt;/a>&lt;/div >'
+// $('div').trim();
+// => '&lt;div>&lt;a>        &lt;/a>&lt;/div>'
+/**
+ * Trim whitespace found within selection.
+ * Only looks one level deep for whitespace, nested text nodes are untouched.
+ * @returns {Cheerio} Return updated cheerio.
+ * @example
+ *
+ * $('div').trim();
+ *
+ */
+cheerio.prototype.trim = function() {
+    for (let i = 0, len = this.length; i &lt; len; i++) {
+        let elem = this[i], children = elem.children;
+        if (elem.type === 'text') {
+            elem.data.trim();
+        }
+        for (let i = 0, len = children.length; i &lt; len; i++) {
+            let child = children[i];
+            if (child.type === 'text') {
+                child.data = child.data.trim();
+            }
+        }
+    }
+    return this;
+};
+
+/**
+ * 
+ * Remove nodes in selection with no content inside of them.
+ * Trims the selection, then removes any nodes that have no
+ * hide param is for when we can't remove the element(s).
+ *
+ * @param  {Object}  [options] Options of removeIfEmpty.
+ * @param  {boolean} options.hide Hide an element instead of removing it.
+ * 
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.removeIfEmpty = function (options) {
+    options = options || {};
+
+    let elements = this.filter(':not(.mw-not-remove)');
+    let elementsKeys = Object.keys(this).reverse().filter(function (value) {
+        return !isNaN(+value);
+    });
+
+    elementsKeys.forEach(function (key) {
+        let element = cheerio(elements[key]);
+
+        element.contents().each(function () {
+          let content = cheerio(this);
+          if( content[0].type === "text" &amp;&amp; content.text().trim() === "") {
+            content.remove();
+          }
+        });
+
+        if(element.contents().length === 0) {
+          if(options.hide) {
+            element.addClass('mw-hide mw-hidden-empty-element');
+          } else {
+            element.remove();
+          }
+        }
+    });
+
+    return this;
+};
+
+
+// Alias for wrapTextChildren with ignore_empty set to true
+/**
+ * Alias for wrapTextChildren() with ignore_empty set to true
+ * @param {Object} node Node.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.wrapNonemptyTextChildren = function(node) {
+    return this.wrapTextChildren(node, true);
+};
+
+
+// // string mutators //
+// //--------------------
+
+// // mutator function replaces reg1 with reg2
+/**
+ * Mutator function replaces reg1 with reg2.
+ * @param {string} reg1 Original text.
+ * @param {string} reg2 New text.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.setText = function(reg1, reg2) {
+  this.each(function(i, elem) {
+    var new_text = cheerio(elem).text().replace(reg1, reg2);
+    cheerio(elem).text(new_text);
+  });
+  return this;
+};
+
+// // mutator sets the text of $this to uppercase
+/**
+ * Mutator sets the text of $this to uppercase.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.setUpper = function() {
+  this.each(function(i, elem) {
+    var new_text = cheerio(elem).text().toUpperCase();
+    cheerio(elem).text(new_text);
+  });
+  return this;
+};
+
+// // mutator sets the text of $this to lowercase
+/**
+ * Mutator sets the text of $this to lowercase.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.setLower = function() {
+  this.each(function(i, elem) {
+    var new_text = cheerio(elem).text().toLowerCase();
+    cheerio(elem).text(new_text);
+  });
+  return this;
+};
+
+/**
+ * Dump all tables using cheerio.dumpTables.
+ *
+ * @example
+ *
+ * body.dumpTables();
+ * 
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.dumpTables = function() {
+  this.find("table, thead, tbody, tfoot, tr, td, th").each(function(){
+    let nodeName = this.name;
+    cheerio(this).name("div")
+      .removeAttr("width")
+      .removeAttr("height")
+      .removeAttr("style")
+      .removeAttr("cellpadding")
+      .removeAttr("cellspacing")
+      .removeAttr("colspan")
+      .removeAttr("rowspan")
+      .addClass("mw-was-" + nodeName);
+  });
+  return this;
+}
+
+/**
+ *
+ * Convert the selected table to a div structure.
+ * It will convert all table elements to divs and
+ * remove the table attributes.
+ * 
+ * Like:
+ *
+ * table -> div.mw-was-table;
+ * thead -> div.mw-was-thead;
+ * tbody -> div.mw-was-tbody;
+ * tfoot -> div.mw-was-foot;
+ * tr -> div.mw-was-tr;
+ * td -> div.mw-was-td;
+ * th -> div.mw-was-th;
+ * 
+ * @example
+ *
+ * let myTable = body.find('table');
+ * myTable.dumpTable();
+ * 
+ * @returns {Cheerio} Return updated cheerio
+ */
+cheerio.prototype.dumpTable = function() {
+  this.each(function(){
+    let nodeName = "";
+    if( this.name === "table" ) {
+      cheerio(this).name("div")
+        .removeAttr("width")
+        .removeAttr("height")
+        .removeAttr("style")
+        .removeAttr("cellpadding")
+        .removeAttr("cellspacing")
+        .removeAttr("colspan")
+        .removeAttr("rowspan")
+        .addClass("mw-was-table")
+        .find("thead, tbody, tfoot, tr, td, th").each(function(){
+          nodeName = this.name;
+          cheerio(this).name("div")
+            .removeAttr("width")
+            .removeAttr("height")
+            .removeAttr("style")
+            .removeAttr("cellpadding")
+            .removeAttr("cellspacing")
+            .removeAttr("colspan")
+            .removeAttr("rowspan")
+            .addClass("mw-was-" + nodeName);
+        });
+    }
+  });
+  return this;
+}
+
+/**
+ *
+ * It reverts the cheerio.dumpTable to table again.
+ * 
+ * @example:
+ *
+ * let myTable = body.find('.mw-was-table');
+ * myTable.revertDumpTable();
+ * 
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.revertDumpTable = function() {
+  this.each(function(){
+    let node = cheerio(this);
+    let nodeName = "";
+
+    if(node.hasClass('mw-was-table')) {
+      node.name("table")
+        .removeClass('mw-was-table')
+        .addClass('mw-no-changes mw-table-dump-reverted')
+        .find(".mw-was-thead, .mw-was-tbody, .mw-was-tfoot, .mw-was-tr, .mw-was-td, .mw-was-th").each(function(){
+            nodeName = cheerio(this).attr('class').match(/mw-was-(.+?)(\s|$)/)[1];
+
+            cheerio(this)
+                        .removeClass('mw-was-thead mw-was-tbody mw-was-tfoot mw-was-tr mw-was-td mw-was-th')
+                        .addClass('mw-table-dump-reverted-' + nodeName)
+                        .name(nodeName);
+        });
+    }
+  });
+  return this;
+}
+
+/**
+ * Mutator prepends text.
+ * @param {string} str Text to be prepended.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.prependText = function(str) {
+  this.each(function(i, elem) {
+    var currentString = cheerio(elem).text();
+    cheerio(elem).text(str + currentString);
+  });
+  return this;
+};
+
+/**
+ * Mutator appends text.
+ * @param {string} str Text to be apended.
+ * @returns {Cheerio} Return updated cheerio.
+ */
+cheerio.prototype.appendText = function(str) {
+  this.each(function(i, elem) {
+    var currentString = cheerio(elem).text();
+    cheerio(elem).text(currentString + str);
+  });
+  return this;
+};
+
+module.exports = {
+    cheerio: cheerio,
+    tag: tag,
+    txt: txt
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated at Mon Oct 12 2015 10:07:17 GMT-0700 (PDT)
+</footer>
+
+<script>prettyPrint();</script>
+</body>
