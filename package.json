@@ -22,6 +22,8 @@
     "moov_stdlib": "moovweb/moov_stdlib#pfst-726-jsdoc",
     "moov_perf": "moovweb/moov_perf#pfst-726-jsdoc",
     "moov_cheerio": "moovweb/moov_cheerio#pfst-726-jsdoc",
-    "moov_cache": "moovweb/moov_cache#pfst-726-jsdoc"
+    "moov_cache": "moovweb/moov_cache#pfst-726-jsdoc",
+    "jsdoc": "^3.3.3",
+    "latodoc": "github:moovweb/latodoc"
   }
 }
