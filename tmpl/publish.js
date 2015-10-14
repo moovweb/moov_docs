@@ -30,8 +30,10 @@ var view;
 var outdir = path.normalize(env.opts.destination);
 
 function sanitize(link){
-    link = link.replace(/(\.js)/g, "_js");
-    link = link.replace(/(\-)/g, "_");
+    link = link.replace(/(\.js)/g, "_js")
+            .replace(/(\-)/g, "_")
+            .replace(/data_section_title/, "data-section-title")
+
     return link;
 }
 
