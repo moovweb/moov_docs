@@ -32,7 +32,7 @@ var outdir = path.normalize(env.opts.destination);
 function sanitize(link){
     link = link.replace(/(\.js)/g, "_js")
             .replace(/(\-)/g, "_")
-            .replace(/data_section_title/, "data-section-title")
+            .replace(/data_section_title\"/g, "data-section-title")
 
     return link;
 }
