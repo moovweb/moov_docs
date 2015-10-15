@@ -319,24 +319,27 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav +=  linktoFn('', item.name );
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
-                itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''), "\" data-section-title");
                 if (methods.length) {
+                    itemsNav += "<section>"
+                    itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''), "\" data-section-title");
                     itemsNav += "<ul class='methods' data-section-content data-section='accordion'>";
-
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
                         itemsNav += linkto(method.longname, method.name);
                         itemsNav += "</li>";
                     });
-
-                    itemsNav += "</ul>";
+                    itemsNav += "</ul></section>";
+                } else {
+                    itemsNav += "<li>"
+                    itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''));
+                    itemsNav += "</li>"
                 }
                 itemsSeen[item.longname] = true;
             }
         });
 
         if (itemsNav !== '') {
-            nav += '<section><a href="#" data-section-title>' + itemHeading + '</a><ul data-section-content data-section="accordion" ><section>' + itemsNav + '</section></ul></section>';
+            nav += '<section><a href="#" data-section-title>' + itemHeading + '</a><ul data-section-content data-section="accordion" >' + itemsNav + '</ul></section>';
         }
     }
 
