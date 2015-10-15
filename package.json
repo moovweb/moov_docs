@@ -18,11 +18,11 @@
   },
   "homepage": "https://github.com/moovweb/moov_docs",
   "dependencies": {
-    "moov_bundler": "moovweb/master",
-    "moov_stdlib": "moovweb/master",
-    "moov_perf": "moovweb/master",
-    "moov_cheerio": "moovweb/master",
-    "moov_cache": "moovweb/master",
+    "moov_bundler": "moovweb/moov_bundler#master",
+    "moov_stdlib": "moovweb/moov_stdlib#master",
+    "moov_perf": "moovweb/moov_perf#master",
+    "moov_cheerio": "moovweb/moov_cheerio#master",
+    "moov_cache": "moovweb/moov_cache#master",
     "jsdoc": "^3.3.3"
   }
 }
