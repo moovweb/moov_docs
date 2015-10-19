@@ -27,7 +27,7 @@ const url = require('url'),
     moov_opt_host = 'opt.moovweb.net/img';
 
 /**
- * @param {Object} selector Perf extends an existing selector engine prototype. 
+ * @param {Object} selector Perf extends an existing selector engine prototype.
  For Moovweb Optimize, we use our modified version of Cheerio.
  * @class
  * @alias Perf
@@ -70,25 +70,31 @@ function Perf(selector) {
     };
 
     /**
-     * Rewrites image source tags to point to the Moovweb Image Optimizer.
-     * @param {Object.&lt;string, Object>} options options of attributes
-     * @returns {Object} selector engine(i.e. moov_cheerio)
-     * @memberof Perf
-     * @example
-     *
-     * let html = "&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>""
-     * let $ = cheerio.load(html);
-     * let args = {
-     *     height: 666,
-     *     width: 777,
-     *     quality: 88,
-     *     format: 'webp'
-     * };
-     * let imgs = $('img').optimizeImg(args);
-     * console.log(imgs[0].attribs.src)
-     * => "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect_ratio=1&amp;quality=88&amp;format=webp"
-     *
-     */
+    * Modify the image src of selected img tags to optimize the image
+    * @param {object} [opts] settings to apply to the selected nodes
+    * @config {integer} [height] The height of the optimized image
+    * @config {integer} [width]  The width of the optimized image
+    * @config {integer} [quality] Fidelity of image (lower means smaller and grainier)
+    * @config {boolean} [link_encoded] Boolean Set height of the optimized image
+    * @config {boolean} [preserve_aspect] True or False,      * @config {boolean} [preserve_aspect] True or False,
+    * @config {string} [format] Sets the image type to webp, jpeg, or png
+    * @returns {Object} selector engine(i.e. moov_cheerio)
+    * @memberof Perf
+    * @example
+    *
+    * let html = "&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>""
+    * let $ = cheerio.load(html);
+    * let args = {
+    *     height: 666,
+    *     width: 777,
+    *     quality: 88,
+    *     format: 'webp'
+    * };
+    * let imgs = $('img').optimizeImg(args);
+    * console.log(imgs[0].attribs.src)
+    * => "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect_ratio=1&amp;quality=88&amp;format=webp"
+    *
+    */
     selector.prototype.optimizeImg = function(opts) {
         for (let i = 0; i &lt; this.length; i++) {
             let opt_attrs = perf.optimizeImageAttribs(this[i], opts);
@@ -158,44 +164,35 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
             width: undefined,
             height: undefined,
             link_encoded: false,
-            preserve_aspect_ratio: true
+            preserve_aspect: true
         }, attrs);
-
-        let encoding_flag = '0';
-        // Havent ported the following logic yet
-        //         TODO: support setting the base64 encoding flag scope-wide like in tritium
-        //         yield() // what does this do in the Tritium context? apply more transforms?
-        //         // This tests for whether the URL should be base64 encoded
-        //         match(perf.$link_encoded, 'true') {
-        //             %url {
-        //                 set(encode64(%url))
-        //             }
-        //             %encoding_flag {
-        //                 set('1')
-        //             }
-        //         }
-
         // Begin constructing the opt_url
         // This will create a link to our opt server, which will serve an optimized image
+        let img_path = parsed_src.href
+        let encoding_flag = "0";
 
+        if(attrs.link_encoded === true){
+            // encode the url to base64
+            encoding_flag = "1";
+            img_path = new Buffer(img_path).toString('base64');
+        }
         // Start by setting the first param, img, to the upstream location
         // of the image to be optimized
         let opt_url = url.format({
             host: moov_opt_host,
-            search: '?img=' + parsed_src.href
+            search: '?img=' + img_path
         });
 
         // We concatenate these in order instead of using param so the same image
         // doesn't get duplicate cached versions with parameters in arbitrary order
-
         opt_url += '&amp;linkEncoded=' + encoding_flag;
         if (attrs.width !== undefined) {
             opt_url += '&amp;width=' + attrs.width;
             if (attrs.height === undefined) {
                 // Only width is set
                 // Pass the aspect ratio flag
-                if (attrs.preserve_aspect_ratio !== false) {
-                    opt_url += '&amp;preserve_aspect_ratio=' + '1';
+                if (attrs.preserve_aspect !== false) {
+                    opt_url += '&amp;preserve_aspect=' + '1';
                 }
             }
         }
@@ -204,15 +201,15 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
             opt_url += '&amp;height=' + attrs.height;
             if (attrs.width === undefined) {
                 // Only height is set
-                if (attrs.preserve_aspect_ratio !== false) {
-                    opt_url += '&amp;preserve_aspect_ratio=' + '1';
+                if (attrs.preserve_aspect !== false) {
+                    opt_url += '&amp;preserve_aspect=' + '1';
                 }
             }
 
         }
 
-        if (attrs.preserve_aspect_ratio !== false) {
-            opt_url += '&amp;preserve_aspect_ratio=' + '1';
+        if (attrs.preserve_aspect !== false) {
+            opt_url += '&amp;preserve_aspect=' + '1';
         }
 
         if (attrs.quality !== undefined) {
@@ -284,7 +281,7 @@ Perf.prototype.ignored = function() {
 
 // Add this domain to the blacklist
 /**
- * Add domain to the ignore list. When perf.selector selects an image tag, 
+ * Add domain to the ignore list. When perf.selector selects an image tag,
  it will not rewrite the image source for any images included in the ignored list.
  * @param {string} domain domain string
  * @example
@@ -312,7 +309,7 @@ module.exports = Perf;
 <br class="clear">
 
 <footer>
-    Documentation generated at Thu Oct 15 2015 23:13:44 GMT+0000 (UTC)
+    Documentation generated at Mon Oct 19 2015 22:48:46 GMT+0000 (UTC)
 </footer>
 
 <script>prettyPrint();</script>
