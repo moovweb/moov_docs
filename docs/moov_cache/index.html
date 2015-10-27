@@ -30,10 +30,13 @@
         <article><h1>moov_cache</h1><p>Javascript Cache Module</p>
 <h2>Quick Start</h2><p><code>npm install</code></p>
 <p>This will build the Node modules that moov_cache depends on and everything will be set up locally under the moov_cache folder.</p>
-<h2>Example usage</h2><p>Require cache</p>
+<h2>Example usage</h2><p>To instantiate a new moov_cache object in your MoovJS project, you can use the following:</p>
 <p><code>var moov_cache = require(&quot;moov_cache&quot;);</code></p>
-<h2>Api</h2><p>Moov_cheerio will be used as the html content selector. So when Cache is contructed, moov_cheerio should be loaded. Also moov_stdlib with export function and env will also be ported.</p>
-<h3>cache.enable()</h3><p>Enables the caching header for the page.</p>
+<p><code>var cache = new moov_cache(fns, cheerio, ctx.Env);</code></p>
+<p>In this example, we are using fns, cheerio, and ctx.Env global objects available in the Node.js VM where your code is executed.</p>
+<p>In the above example, fns refers to <a href="http://github.com/moovweb/moov_stdlib">Moov_Stdlib</a>, used as a source of exports,
+cheerio is an instance of <a href="http://github.com/moovweb/moov_cheerio">Moov_Cheerio</a>, used as the html content selector, and ctx.Env is a reference to the set of environment variables associated with a request as it goes through the moov server.</p>
+<h2>Api</h2><h3>cache.enable()</h3><p>Enables the caching header for the page.</p>
 <p>This function will set the cache header of your page to true with no additional parameters</p>
 <h3>cache.enable_for(seconds)</h3><p>Enables caching of things for a specified period of time.</p>
 <p>This function will set the necessary headers to tell Moovweb to cache the current response. The parameter is the number of seconds to cache things for.</p>
@@ -61,7 +64,7 @@ This will set up the page so that all chosen tag parts(e.g. div) with the &quot;
 <br class="clear">
 
 <footer>
-    Documentation generated at Mon Oct 19 2015 22:48:45 GMT+0000 (UTC)
+    Documentation generated at Tue Oct 27 2015 01:02:46 GMT+0000 (UTC)
 </footer>
 
 <script>prettyPrint();</script>
