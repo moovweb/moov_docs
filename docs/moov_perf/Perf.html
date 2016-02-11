@@ -481,7 +481,7 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>let html = "&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>""
+    <pre class="prettyprint"><code>let html = '&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>'
 let $ = cheerio.load(html);
 let args = {
     height: 666,
@@ -491,7 +491,7 @@ let args = {
 };
 let imgs = $('img').optimizeImg(args);
 console.log(imgs[0].attribs.src)
-=> "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect_ratio=1&amp;quality=88&amp;format=webp"</code></pre>
+=> "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect=1&amp;quality=88&amp;format=webp"</code></pre>
 
 
 
@@ -1425,7 +1425,7 @@ $('img').quality('88');</code></pre>
 <br class="clear">
 
 <footer>
-    Documentation generated at Mon Oct 19 2015 22:48:46 GMT+0000 (UTC)
+    Documentation generated at Thu Feb 11 2016 18:55:42 GMT+0000 (UTC)
 </footer>
 
 <script>prettyPrint();</script>
