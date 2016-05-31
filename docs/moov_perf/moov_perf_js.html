@@ -82,7 +82,7 @@ function Perf(selector) {
     * @memberof Perf
     * @example
     *
-    * let html = "&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>""
+    * let html = '&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>'
     * let $ = cheerio.load(html);
     * let args = {
     *     height: 666,
@@ -92,7 +92,7 @@ function Perf(selector) {
     * };
     * let imgs = $('img').optimizeImg(args);
     * console.log(imgs[0].attribs.src)
-    * => "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect_ratio=1&amp;quality=88&amp;format=webp"
+    * => "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect=1&amp;quality=88&amp;format=webp"
     *
     */
     selector.prototype.optimizeImg = function(opts) {
@@ -168,13 +168,17 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
         }, attrs);
         // Begin constructing the opt_url
         // This will create a link to our opt server, which will serve an optimized image
-        let img_path = parsed_src.href
+        let img_path = parsed_src.href;
         let encoding_flag = "0";
 
-        if(attrs.link_encoded === true){
+        if (attrs.link_encoded === true) {
             // encode the url to base64
             encoding_flag = "1";
             img_path = new Buffer(img_path).toString('base64');
+        } else {
+            // if it's not meant to be base64-encoded, percent-encode instead
+            // (don't do both)
+            img_path = encodeURIComponent(img_path);
         }
         // Start by setting the first param, img, to the upstream location
         // of the image to be optimized
@@ -192,7 +196,7 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
                 // Only width is set
                 // Pass the aspect ratio flag
                 if (attrs.preserve_aspect !== false) {
-                    opt_url += '&amp;preserve_aspect=' + '1';
+                    opt_url += '&amp;preserve_aspect=1';
                 }
             }
         }
@@ -202,14 +206,14 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
             if (attrs.width === undefined) {
                 // Only height is set
                 if (attrs.preserve_aspect !== false) {
-                    opt_url += '&amp;preserve_aspect=' + '1';
+                    opt_url += '&amp;preserve_aspect=1';
                 }
             }
 
         }
 
         if (attrs.preserve_aspect !== false) {
-            opt_url += '&amp;preserve_aspect=' + '1';
+            opt_url += '&amp;preserve_aspect=1';
         }
 
         if (attrs.quality !== undefined) {
@@ -309,7 +313,7 @@ module.exports = Perf;
 <br class="clear">
 
 <footer>
-    Documentation generated at Mon Oct 19 2015 22:48:46 GMT+0000 (UTC)
+    Documentation generated at Tue May 31 2016 19:03:37 GMT+0000 (UTC)
 </footer>
 
 <script>prettyPrint();</script>
