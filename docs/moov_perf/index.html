@@ -28,7 +28,8 @@
 
     <section class="readme">
         <article><h1>moov_perf</h1><p>Javascript Performance Module</p>
-<h2>Quick Start</h2><p><code>npm install</code></p>
+<h2>Quick Start</h2><p><code>mv .npmrc.example .npmrc</code></p>
+<p><code>npm install</code></p>
 <p>This will build the Node modules that moov_stdlib depends on and everything will be set up locally under the moov_stdlib folder. The npm-shrinkwrap.json file is used to version lock all dependencies.</p>
 <h2>Example usage</h2><p>Require perf</p>
 <p><code>const moov_perf = require(&quot;moov_perf&quot;);</code></p>
@@ -37,7 +38,7 @@
 <p>When instantiating the perf object, Pass the prototype of your selector engine (for moov_cheerio, this is accessible via the cheerio helper). This gives you access to the perf functions while modifying a selection, as well as a ignorelist for domains you specifically do not wish to optimize while performing image optimizations.</p>
 <p><code>const perf = new moov_perf(cheerio)</code></p>
 <h2>Api</h2><h3>cheerio.optimizeImg()</h3><p>Rewrites image source tags to point to the Moovweb Image Optimizer.</p>
-<pre class="prettyprint source"><code>let html = &quot;&lt;img src=&quot;http://www.moovweb.com/selfie.jpg&quot;>&lt;/img>&quot;&quot;
+<pre class="prettyprint source"><code>let html = '&lt;img src=&quot;http://www.moovweb.com/selfie.jpg&quot;>&lt;/img>'
 let $ = cheerio.load(html);
 let args = {
     height: 666,
@@ -47,7 +48,7 @@ let args = {
 };
 let imgs = $('img').optimizeImg(args);
 console.log(imgs[0].attribs.src)
-=> &quot;//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&linkEncoded=0&width=777&height=666&preserve_aspect_ratio=1&quality=88&format=webp&quot;</code></pre><h3>cheerio.Quality</h3><p>Apply the quality data attribute to a selection of nodes</p>
+=> &quot;//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&linkEncoded=0&width=777&height=666&preserve_aspect=1&quality=88&format=webp&quot;</code></pre><h3>cheerio.Quality</h3><p>Apply the quality data attribute to a selection of nodes</p>
 <pre class="prettyprint source"><code>const perf = new moov_perf(cheerio)
 let $ = cheerio.load('&lt;img src=&quot;/selfie.jpg&quot;>&lt;/img>');
 $('img').quality('88');</code></pre><p>Quality can be tuned to optimize performance of images without dramatically reducing fidelity.</p>
@@ -71,7 +72,7 @@ $('img').quality('88');</code></pre><p>Quality can be tuned to optimize performa
 <br class="clear">
 
 <footer>
-    Documentation generated at Mon Oct 19 2015 22:48:46 GMT+0000 (UTC)
+    Documentation generated at Wed Jun 22 2016 20:21:20 GMT+0000 (UTC)
 </footer>
 
 <script>prettyPrint();</script>
