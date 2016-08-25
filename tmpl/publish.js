@@ -337,7 +337,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         });
 
         if (itemsNav !== '') {
-            nav += '<div data-section="accordion"><section class="active"><a href="#" data-section-title>' + itemHeading + '</a><ul data-section-content>' + itemsNav + '</ul></section></div>';
+            nav += '<div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>' + itemHeading + '</a><ul data-section-content>' + itemsNav + '</ul></section></div>';
         }
     }
 
@@ -395,7 +395,7 @@ function buildNav(members) {
             nav += '<h3>' + linkto('global', 'Global') + '</h3>';
         }
         else {
-            nav += '<div data-section="accordion"><section class="active"><a href="#" data-section-title>Global</a><ul data-section-content>' + globalNav + '</ul></section></div>';
+            nav += '<div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>Global</a><ul data-section-content>' + globalNav + '</ul></section></div>';
         }
     }
 
