@@ -318,15 +318,15 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                 itemsNav +=  linktoFn('', item.name );
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
                 if (methods.length) {
-                    itemsNav += "<section>"
+                    itemsNav += "<div data-section='accordion'><section class='active a'>"
                     itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''), "\" data-section-title");
-                    itemsNav += "<ul class='methods' data-section-content data-section='accordion'>";
+                    itemsNav += "<ul class='methods' data-section-content>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
                         itemsNav += linkto(method.longname, method.name);
                         itemsNav += "</li>";
                     });
-                    itemsNav += "</ul></section>";
+                    itemsNav += "</ul></section></div>";
                 } else {
                     itemsNav += "<li>"
                     itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''));
@@ -337,7 +337,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         });
 
         if (itemsNav !== '') {
-            nav += '<section><a href="#" data-section-title>' + itemHeading + '</a><ul data-section-content data-section="accordion" >' + itemsNav + '</ul></section>';
+            nav += '<div data-section="accordion"><section class="active b"><a href="#" data-section-title>' + itemHeading + '</a><ul data-section-content>' + itemsNav + '</ul></section></div>';
         }
     }
 
@@ -367,7 +367,7 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<ul class="doc-sidebar" data-section-content data-section="accordion" id="content-sidebar">';
+    var nav = '<ul class="doc-sidebar" data-section-content id="content-sidebar">';
     var seen = {};
     var seenTutorials = {};
 
@@ -395,7 +395,7 @@ function buildNav(members) {
             nav += '<h3>' + linkto('global', 'Global') + '</h3>';
         }
         else {
-            nav += '<section><a href="#" data-section-title>Global</a><ul data-section-content data-section="accordion">' + globalNav + '</ul></section>';
+            nav += '<div data-section="accordion"><section class="active c"><a href="#" data-section-title>Global</a><ul data-section-content>' + globalNav + '</ul></section></div>';
         }
     }
 
