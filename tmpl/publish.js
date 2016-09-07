@@ -237,7 +237,11 @@ function generate(type, title, docs, filename, resolveLinks) {
         html = helper.resolveLinks(html);// turn {@link foo} into <a href="foodoc.html">foo</a>
 
     }
+    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
+    html = html.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
     html = html.replace(/\.html/g, "");
+    html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
+    html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
