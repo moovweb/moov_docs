@@ -8,8 +8,7 @@ var self = this;
     <?js } ?>
 
     <h2 class="name" id="<?js= id ?>">
-        <?js= (data.comment.indexOf("@method") === -1 ? "" : ".") +
-              (kind === 'class' ? 'new ' : '') +
+        <?js= (kind === 'class' ? 'new ' : '') +
               name +
               (data.signature || '')
         ?>

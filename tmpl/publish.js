@@ -317,6 +317,20 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         items.forEach(function(item) {
             var methods = find({kind:'function', memberof: item.longname});
             var members = find({kind:'member', memberof: item.longname});
+            var functions = [];
+
+            methods.forEach(function (method, i) {
+                if (method.comment.indexOf("@method") > -1) {
+                    method.name = "." + method.name;
+                } else {
+                  delete methods[i];
+                  functions.push(method);
+                }
+            });
+
+            methods = functions.concat(methods.filter(function(method) {
+              return method !== undefined;
+            }));
 
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav +=  linktoFn('', item.name );
@@ -327,7 +341,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     itemsNav += "<ul class='methods' data-section-content>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, (method.comment.indexOf("@method") > -1 ? "." : "") + method.name + "()");
+                        itemsNav += linkto(method.longname, method.name + "()");
                         itemsNav += "</li>";
                     });
                     itemsNav += "</ul></section></div>";
