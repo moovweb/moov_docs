@@ -327,7 +327,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     itemsNav += "<ul class='methods' data-section-content>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, method.name);
+                        itemsNav += linkto(method.longname, (method.comment.indexOf("@method") > -1 ? "." : "") + method.name + "()");
                         itemsNav += "</li>";
                     });
                     itemsNav += "</ul></section></div>";
@@ -403,7 +403,11 @@ function buildNav(members) {
         }
     }
 
+    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
+    nav = nav.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
     nav = nav.replace(/\.html/g,'');
+    nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
+    nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     nav += "</ul>"
     return nav;
 }
