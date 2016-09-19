@@ -13,13 +13,15 @@ var self = this;
               (data.signature || '')
         ?>
         <?js if (data.meta && self.outputSourceFiles) {?>
-          <small class="line-source"><?js= self.linkto(meta.shortpath, 'Source' + ' (L' + meta.lineno + ')', null, 'line' + meta.lineno) ?></small>
+          <small class="line-source">
+            <?js if (data.summary) { ?>
+              <div class="mw-banner <?js= summary ?>"><?js= summary ?></div>
+            <?js } ?>
+            <?js= self.linkto(meta.shortpath, 'Source' + ' (L' + meta.lineno + ')', null, 'line' + meta.lineno) ?>
+          </small>
         <?js } ?>
     </h2>
 
-    <?js if (data.summary) { ?>
-    <p class="summary"><?js= summary ?></p>
-    <?js } ?>
 <?js } ?>
 
 <?js if (data.kind !== 'module' && data.description) { ?>
