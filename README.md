@@ -10,3 +10,5 @@ This will retrieve moov modules for moov_docs.
 `npm run jsdoc`
 
 This will generate documentations for moov modules. Then index.html would have access to the docs.
+
+Jenkin2 job is https://jenkins2.moovweb.net/job/moov_docs
