@@ -8,7 +8,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Global</h1>
+    <h1 class="page-title">headers</h1>
     
 
     
@@ -21,7 +21,7 @@
 <header>
     
         <h2>
-        
+        headers
         </h2>
         
     
@@ -30,6 +30,10 @@
 <article>
     <div class="container-overview">
     
+        
+            <div class="description">Header manipulation getters, setters, and methods to be used from within
+moov_request_header_transform.js (for upstream request headers) or
+moov_response_header_transform.js (for transformed response headers).</div>
         
 
         
@@ -74,6 +78,336 @@
     </div>
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+
+
+
+<p class="summary">headerset</p>
+
+
+
+<div class="description">
+    Gets or sets the request method (request only).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.method = "POST";
+// => Result: Moovweb goes upstream with a POST request method.
+headers.method;
+// => Returns: "POST"</code></pre>
+
+
+
+        
+            
+
+
+
+<p class="summary">headerset</p>
+
+
+
+<div class="description">
+    Gets or sets the request URL (request only).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.path = "/test-page";
+// => Result: Moovweb goes upstream requesting the /test-page URL, even if
+//    the user requested another page. headers.path;
+// => Returns: "/test-page"</code></pre>
+
+
+
+        
+            
+
+
+
+<p class="summary">headerset</p>
+
+
+
+<div class="description">
+    Gets or sets the status code (response only).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.statusCode = "600";
+// => Result: Moovweb modifies the response to return a 600 status code.
+headers.statusCode;
+// => Returns: "600"</code></pre>
+
+
+
+        
+            
+
+
+
+<p class="summary">headerset</p>
+
+
+
+<div class="description">
+    Gets or sets the status text (response only).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.statusText = "Test Message";
+// => Result: Moovweb modifies the response to return a "Test Message" status
+//    text.
+headers.statusText;
+// => Returns: "Test Message"</code></pre>
+
+
+
+        
+            
+
+
+
+<p class="summary">headerset</p>
+
+
+
+<div class="description">
+    Gets or sets the HTTP minor version.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.versionMinor = "0";
+// => Result: Moovweb modifies the request or response to use HTTP/1.0.
+headers.versionMinor;
+// => Returns: "0"</code></pre>
+
+
+
+        
+    
 
     
 
@@ -82,21 +416,21 @@
 
     
 
-    <h2 class="name" id="breakpoint">
-        breakpoint<span class="signature">(breakpointId)</span>
+    <h2 class="name" id=".addHeader">
+        .addHeader<span class="signature">(key, val)</span>
         
-          <small class="line-source"><a href="functions_js#line98">Source (L98)</a></small>
+          <small class="line-source"><a href="headerset_js#line166">Source (L166)</a></small>
         
     </h2>
 
+    
+    <p class="summary">headerset</p>
     
 
 
 
 <p class="description">
-    Calls the debugger and logs a message to the console, provided
-that the debug mode has been enabled (the moov_debug parameter must exist in
-the URL and the Dashboard Inspector must be open).
+    Adds a new header.
 </p>
 
 
@@ -132,7 +466,7 @@ the URL and the Dashboard Inspector must be open).
 
         <tr>
             
-                <td class="name"><code>breakpointId</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
@@ -148,7 +482,30 @@ the URL and the Dashboard Inspector must be open).
 
             
 
-            <td class="description last">A string for a breakpoint terminal message.</td>
+            <td class="description last">A string for the header key.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>val</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A string for the header value.</td>
         </tr>
 
     
@@ -181,10 +538,8 @@ the URL and the Dashboard Inspector must be open).
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>// If running locally and the url includes ?moov_debug=true, break here.
-if (env.path.indexOf("moov_debug=true") >= 0) {
-  breakpoint("Parameter 'moov_debug=true' detected in the URL.");
-}</code></pre>
+    <pre class="prettyprint"><code>headers.addHeader("X-New-Header-Key", "New Header Value");
+// => Result: New "X-New-Header-Key" key-value pair.</code></pre>
 
 
 
@@ -195,21 +550,23 @@ if (env.path.indexOf("moov_debug=true") >= 0) {
 
     
 
-    <h2 class="name" id="tag">
-        tag<span class="signature">(name, attribs<span class="signature-attributes">opt</span>, content<span class="signature-attributes">opt</span>)</span>
+    <h2 class="name" id=".header">
+        .header<span class="signature">(key, val<span class="signature-attributes">opt</span>)</span>
         
-          <small class="line-source"><a href="functions_js#line15">Source (L15)</a></small>
+          <small class="line-source"><a href="headerset_js#line132">Source (L132)</a></small>
         
     </h2>
 
+    
+    <p class="summary">headerset</p>
     
 
 
 
 <p class="description">
-    Creates a new element. Note that this is <i>not</i> a Cheerio
-object: you should wrap it in `$()` if Cheerio methods need to be invoked on
-it.
+    Accesses the value for the give header. If a second `val`
+argument is supplied, then this adds a new header key-value pair, or
+modifies it if it already exists.
 </p>
 
 
@@ -247,7 +604,7 @@ it.
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
@@ -271,48 +628,14 @@ it.
 
             
 
-            <td class="description last">A string for the name of the element.</td>
+            <td class="description last">A string for the header key.</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>attribs</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last">An object containing the attribute-value pairs of
-the new element.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>content</code></td>
+                <td class="name"><code>val</code></td>
             
 
             <td class="type">
@@ -338,7 +661,7 @@ the new element.</td>
 
             
 
-            <td class="description last">A string for the text node for the new element.</td>
+            <td class="description last">A string for the header value.</td>
         </tr>
 
     
@@ -362,8 +685,8 @@ the new element.</td>
 
         
 <p class="param-desc">
-    An object associated with the newly-created DOM element.
-defined by the arguments passed in (denoted by a `type` value of "tag").
+    A string for the header value (getter), or
+`undefined` (setter).
 </p>
 
 
@@ -372,32 +695,14 @@ defined by the arguments passed in (denoted by a `type` value of "tag").
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>let grape = tag("li", {class: "grape"}, "Grape");
-grape.insertAfter(".apple");
-// => Throws: TypeError (grape is not a Cheerio object, and the object
-//    associated with the grape DOM element does not have an insertAfter
-//    method defined)
-$body.find("ul").append(grape);
-// => Note: This is OK - you can append a non-Cheerio object here
-// => HTML output:
-//    &lt;ul id="fruits">
-//      &lt;li class="apple" data-which="fuji">Apple&lt;/li>
-//      &lt;li class="grape">Grape&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>headers.header("User-Agent");
+// => Returns: A string for the User-Agent header value.</code></pre>
 
-    <pre class="prettyprint"><code>let $grape = $(tag("div", {class: "grape"}, "Grape"));
-$grape.insertAfter(".apple");
-// => Returns: original Cheerio object associated with the newly-created
-//    `.grape` element
-// => HTML output:
-//    &lt;ul id="fruits">
-//      &lt;li class="apple" data-which="fuji">Apple&lt;/li>
-//      &lt;li class="grape">Grape&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>headers.addHeader("X-New-Header-Key", "New Header Value");
+// => Result: New "X-New-Header-Key" key-value pair.</code></pre>
+
+    <pre class="prettyprint"><code>headers.header("User-Agent", env.user_agent + "/Moovweb");
+// => Result: Updated User-Agent header.</code></pre>
 
 
 
@@ -408,19 +713,21 @@ $grape.insertAfter(".apple");
 
     
 
-    <h2 class="name" id="txt">
-        txt<span class="signature">(content)</span>
+    <h2 class="name" id=".removeAllHeaders">
+        .removeAllHeaders<span class="signature">(key)</span>
         
-          <small class="line-source"><a href="functions_js#line69">Source (L69)</a></small>
+          <small class="line-source"><a href="headerset_js#line200">Source (L200)</a></small>
         
     </h2>
 
+    
+    <p class="summary">headerset</p>
     
 
 
 
 <p class="description">
-    Creates a new text node.
+    Removes all headers matching a given key name.
 </p>
 
 
@@ -456,13 +763,13 @@ $grape.insertAfter(".apple");
 
         <tr>
             
-                <td class="name"><code>content</code></td>
+                <td class="name"><code>key</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">String</span>
 
 
             
@@ -472,8 +779,7 @@ $grape.insertAfter(".apple");
 
             
 
-            <td class="description last">A string for the content that the text node will
-contain.</td>
+            <td class="description last">A string for the header key to remove.</td>
         </tr>
 
     
@@ -497,9 +803,7 @@ contain.</td>
 
         
 <p class="param-desc">
-    An object associated with the newly-created text node
-defined by the `content` argument passed in (denoted by a `type` value of
-"text").
+    `undefined`
 </p>
 
 
@@ -508,13 +812,119 @@ defined by the `content` argument passed in (denoted by a `type` value of
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>$body.find(".apple").append(txt(", more text"));
-// => HTML output:
-//    &lt;ul id="fruits">
-//      &lt;li class="apple" data-which="fuji">Apple, more text&lt;/li>
-//      &lt;li class="pear">Pear&lt;/li>
-//      &lt;li class="orange">Orange&lt;/li>
-//    &lt;/ul></code></pre>
+    <pre class="prettyprint"><code>headers.removeAllHeaders("Set-Cookie");
+// => Result: Removes all Set-Cookie headers.</code></pre>
+
+
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id=".removeHeader">
+        .removeHeader<span class="signature">(key)</span>
+        
+          <small class="line-source"><a href="headerset_js#line183">Source (L183)</a></small>
+        
+    </h2>
+
+    
+    <p class="summary">headerset</p>
+    
+
+
+
+<p class="description">
+    Removes the last matching header.
+</p>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A string for the header key to remove.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Return Value</h5>
+
+        
+<p class="param-desc">
+    `undefined`
+</p>
+
+
+    
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>headers.removeHeader("Set-Cookie");
+// => Result: Removes the last found Set-Cookie header.</code></pre>
 
 
 
