@@ -21,13 +21,6 @@
 
 <header>
     <?js if (!doc.longname || doc.kind !== 'module') { ?>
-        <h2><?js if (doc.ancestors && doc.ancestors.length) { ?>
-            <span class="ancestors"><?js= doc.ancestors.join('') ?></span>
-        <?js } ?>
-        <?js= doc.name ?>
-        <?js if (doc.variation) { ?>
-            <sup class="variation"><?js= doc.variation ?></sup>
-        <?js } ?></h2>
         <?js if (doc.classdesc) { ?>
             <div class="class-description"><?js= doc.classdesc ?></div>
         <?js } ?>
@@ -77,8 +70,6 @@
         }
         if (members && members.length && members.forEach) {
     ?>
-        <h3 class="subsection-title">Members</h3>
-
         <?js members.forEach(function(p) { ?>
             <?js= self.partial('members.tmpl', p) ?>
         <?js }); ?>

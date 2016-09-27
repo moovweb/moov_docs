@@ -105,7 +105,9 @@ function updateItemName(item) {
     }
 
     if (attributes && attributes.length) {
-        itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName, attributes.join(', ') );
+        // assume attribute is just whether or not it's optional (ignore
+        // repeatable & nullable)
+        itemName = `[${itemName}]`;
     }
 
     return itemName;
@@ -237,7 +239,11 @@ function generate(type, title, docs, filename, resolveLinks) {
         html = helper.resolveLinks(html);// turn {@link foo} into <a href="foodoc.html">foo</a>
 
     }
+    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
+    html = html.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
     html = html.replace(/\.html/g, "");
+    html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
+    html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
@@ -313,6 +319,22 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         items.forEach(function(item) {
             var methods = find({kind:'function', memberof: item.longname});
             var members = find({kind:'member', memberof: item.longname});
+            var functions = [];
+
+            methods.forEach(function (method, i) {
+                if (method.comment.indexOf("@method") > -1) {
+                    method.name = "." + method.name;
+                } else {
+                  delete methods[i];
+                  functions.push(method);
+                }
+            });
+
+            methods = functions.concat(methods.filter(function(method) {
+              return method !== undefined;
+            }));
+
+            methods = members.concat(methods);
 
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav +=  linktoFn('', item.name );
@@ -323,7 +345,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     itemsNav += "<ul class='methods' data-section-content>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, method.name);
+                        itemsNav += linkto(method.longname, method.name + (method.kind === "member" ? "" : "()"));
                         itemsNav += "</li>";
                     });
                     itemsNav += "</ul></section></div>";
@@ -399,7 +421,11 @@ function buildNav(members) {
         }
     }
 
+    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
+    nav = nav.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
     nav = nav.replace(/\.html/g,'');
+    nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
+    nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     nav += "</ul>"
     return nav;
 }
