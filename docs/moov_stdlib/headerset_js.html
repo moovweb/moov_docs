@@ -1,0 +1,280 @@
+<body>
+
+<div data-section="accordion" id="content-nav">
+  <section>
+      <ul class="doc-sidebar" data-section-content id="content-sidebar"><div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>Namespaces</a><ul data-section-content><div data-section='accordion'><section class='active'><a href="fns" class="" data-section-title>fns</a><ul class='methods' data-section-content><li data-type='method'><a href="fns#.absolutize">absolutize</a></li><li data-type='method'><a href="fns#.absolutizeSrcs">absolutizeSrcs</a></li><li data-type='method'><a href="fns#.activeLayers">activeLayers</a></li><li data-type='method'><a href="fns#.addAssets">addAssets</a></li><li data-type='method'><a href="fns#.addCanonicalTag">addCanonicalTag</a></li><li data-type='method'><a href="fns#.addCookie">addCookie</a></li><li data-type='method'><a href="fns#.assert">assert</a></li><li data-type='method'><a href="fns#.asset">asset</a></li><li data-type='method'><a href="fns#.cleanMobileMetaTags">cleanMobileMetaTags</a></li><li data-type='method'><a href="fns#.export">export</a></li><li data-type='method'><a href="fns#.getPageType">getPageType</a></li><li data-type='method'><a href="fns#.handleRobots">handleRobots</a></li><li data-type='method'><a href="fns#.highlightDevelopment">highlightDevelopment</a></li><li data-type='method'><a href="fns#.highlightPreview">highlightPreview</a></li><li data-type='method'><a href="fns#.init$">init$</a></li><li data-type='method'><a href="fns#.insertDnsPrefetch">insertDnsPrefetch</a></li><li data-type='method'><a href="fns#.insertSubresource">insertSubresource</a></li><li data-type='method'><a href="fns#.isRobots">isRobots</a></li><li data-type='method'><a href="fns#.layer">layer</a></li><li data-type='method'><a href="fns#.layerNot">layerNot</a></li><li data-type='method'><a href="fns#.moveStylesAboveScripts">moveStylesAboveScripts</a></li><li data-type='method'><a href="fns#.moveStylesToHead">moveStylesToHead</a></li><li data-type='method'><a href="fns#.onDevelopment">onDevelopment</a></li><li data-type='method'><a href="fns#.perfectProxy">perfectProxy</a></li><li data-type='method'><a href="fns#.queryLayerText">queryLayerText</a></li><li data-type='method'><a href="fns#.relocateScripts">relocateScripts</a></li><li data-type='method'><a href="fns#.removeAllStyles">removeAllStyles</a></li><li data-type='method'><a href="fns#.removeDesktopJs">removeDesktopJs</a></li><li data-type='method'><a href="fns#.removeDesktopMobileIcon">removeDesktopMobileIcon</a></li><li data-type='method'><a href="fns#.removeHtmlComments">removeHtmlComments</a></li><li data-type='method'><a href="fns#.rewriteAspNetScripts">rewriteAspNetScripts</a></li><li data-type='method'><a href="fns#.rewriteJsSrcs">rewriteJsSrcs</a></li><li data-type='method'><a href="fns#.rewriteLink">rewriteLink</a></li><li data-type='method'><a href="fns#.rewriteLinks">rewriteLinks</a></li><li data-type='method'><a href="fns#.rewriteToProxy">rewriteToProxy</a></li><li data-type='method'><a href="fns#.sass">sass</a></li><li data-type='method'><a href="fns#.scoped$">scoped$</a></li><li data-type='method'><a href="fns#.setPageType">setPageType</a></li><li data-type='method'><a href="fns#.slashPath">slashPath</a></li></ul></section></div><div data-section='accordion'><section class='active'><a href="headers" class="" data-section-title>headers</a><ul class='methods' data-section-content><li data-type='method'><a href="headers#.addHeader">addHeader</a></li><li data-type='method'><a href="headers#.header">header</a></li><li data-type='method'><a href="headers#.removeAllHeaders">removeAllHeaders</a></li><li data-type='method'><a href="headers#.removeHeader">removeHeader</a></li></ul></section></div></ul></section></div><div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>Global</a><ul data-section-content><li><a href="global#breakpoint">breakpoint</a></li><li><a href="global#tag">tag</a></li><li><a href="global#txt">txt</a></li></ul></section></div></ul>
+  </section>
+</div>
+
+<div id="main">
+    
+    <h1 class="page-title">headerset.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+const REQ_REGEX = /^([A-Z]+)\s+(.+)\s+HTTP\/1.([01])$/m;
+const RES_REGEX = /^HTTP\/1.([01]) (\d{3}) ([^\n\r]+)$/m;
+
+/**
+ * Header manipulation getters, setters, and methods to be used from within
+ * moov_request_header_transform.js (for upstream request headers) or
+ * moov_response_header_transform.js (for transformed response headers).
+ * @namespace headers
+ */
+function HeaderSet(type, rawHeaders) {
+    this.type = type;
+    this.fields = [];
+    this.hlookup = {};
+    let matches;
+    if (type === "request") {
+        matches = rawHeaders.match(REQ_REGEX);
+        this.method = matches[1];
+        this.path = matches[2];
+        this.versionMinor = matches[3];
+    } else if (type === "response") {
+        matches = rawHeaders.match(RES_REGEX);
+        this.versionMinor = matches[1];
+        this.statusCode = matches[2];
+        this.statusText = matches[3];
+    }
+
+    let headerExp = /^([^:\s]*): *(.*)$/mg; // local since it contains unique state
+    headerExp.lastIndex = matches[0].length;
+    while ((matches = headerExp.exec(rawHeaders))) {
+        this.hlookup[matches[1].toLowerCase()] = this.fields.length;
+        this.fields.push([matches[1], matches[2]]);
+    }
+
+    let self = this;
+
+    this.fns = {
+        get method() {
+            return self.method;
+        },
+        get path() {
+            return self.path;
+        },
+        get versionMinor() {
+            return self.versionMinor;
+        },
+        get statusCode() {
+            return self.statusCode;
+        },
+        get statusText() {
+            return self.statusText;
+        },
+        /**
+         * @member method
+         * @summary headerset
+         * @memberof headers
+         * @description Gets or sets the request method (request only).
+         * @example
+         * headers.method = "POST";
+         * // => Result: Moovweb goes upstream with a POST request method.
+         * headers.method;
+         * // => Returns: "POST"
+         */
+        set method(val) {
+            self.method = val;
+        },
+        /**
+         * @member path
+         * @summary headerset
+         * @memberof headers
+         * @description Gets or sets the request URL (request only).
+         * @example
+         * headers.path = "/test-page";
+         * // => Result: Moovweb goes upstream requesting the /test-page URL, even if
+         * //    the user requested another page. headers.path;
+         * // => Returns: "/test-page"
+         */
+        set path(val) {
+            self.path = val;
+        },
+        /**
+         * @member versionMinor
+         * @summary headerset
+         * @memberof headers
+         * @description Gets or sets the HTTP minor version.
+         * @example
+         * headers.versionMinor = "0";
+         * // => Result: Moovweb modifies the request or response to use HTTP/1.0.
+         * headers.versionMinor;
+         * // => Returns: "0"
+         */
+        set versionMinor(val) {
+            self.versionMinor = val;
+        },
+        /**
+         * @member statusCode
+         * @summary headerset
+         * @memberof headers
+         * @description Gets or sets the status code (response only).
+         * @example
+         * headers.statusCode = "600";
+         * // => Result: Moovweb modifies the response to return a 600 status code.
+         * headers.statusCode;
+         * // => Returns: "600"
+         */
+        set statusCode(val) {
+            self.statusCode = val;
+        },
+        /**
+         * @member statusText
+         * @summary headerset
+         * @memberof headers
+         * @description Gets or sets the status text (response only).
+         * @example
+         * headers.statusText = "Test Message";
+         * // => Result: Moovweb modifies the response to return a "Test Message" status
+         * //    text.
+         * headers.statusText;
+         * // => Returns: "Test Message"
+         */
+        set statusText(val) {
+            self.statusText = val;
+        },
+        header: this.header.bind(this),
+        addHeader: this.addHeader.bind(this),
+        removeHeader: this.removeHeader.bind(this),
+        removeAllHeaders: this.removeAllHeaders.bind(this)
+    };
+}
+
+/**
+ * @method header
+ * @summary headerset
+ * @memberof headers
+ * @description Accesses the value for the give header. If a second `val`
+ * argument is supplied, then this adds a new header key-value pair, or
+ * modifies it if it already exists.
+ * @param {String} key A string for the header key.
+ * @param {String} [val] A string for the header value.
+ * @return {String|undefined} A string for the header value (getter), or
+ * `undefined` (setter).
+ * @example
+ * headers.header("User-Agent");
+ * // => Returns: A string for the User-Agent header value.
+ * @example
+ * headers.addHeader("X-New-Header-Key", "New Header Value");
+ * // => Result: New "X-New-Header-Key" key-value pair.
+ * @example
+ * headers.header("User-Agent", env.user_agent + "/Moovweb");
+ * // => Result: Updated User-Agent header.
+ */
+HeaderSet.prototype.header = function(key, val) {
+    let k = key.toLowerCase();
+    if (val) {
+        if (k in this.hlookup) {
+            this.fields[this.hlookup[k]][1] = val;
+        } else {
+            this.addHeader(key, val);
+        }
+    } else {
+        return (this.fields[this.hlookup[k]] || [])[1];
+    }
+};
+
+/**
+ * @method addHeader
+ * @summary headerset
+ * @memberof headers
+ * @description Adds a new header.
+ * @param {String} key A string for the header key.
+ * @param {String} val A string for the header value.
+ * @return {undefined} `undefined`
+ * @example
+ * headers.addHeader("X-New-Header-Key", "New Header Value");
+ * // => Result: New "X-New-Header-Key" key-value pair.
+ */
+HeaderSet.prototype.addHeader = function(key, val) {
+    this.hlookup[key.toLowerCase()] = this.fields.length;
+    this.fields.push([key, val]);
+};
+
+/**
+ * @method removeHeader
+ * @summary headerset
+ * @memberof headers
+ * @description Removes the last matching header.
+ * @param {String} key A string for the header key to remove.
+ * @return {undefined} `undefined`
+ * @example
+ * headers.removeHeader("Set-Cookie");
+ * // => Result: Removes the last found Set-Cookie header.
+ */
+HeaderSet.prototype.removeHeader = function(key) {
+    key = key.toLowerCase();
+    this.fields[this.hlookup[key]] = [];
+    delete this.hlookup[key];
+};
+
+/**
+ * @method removeAllHeaders
+ * @summary headerset
+ * @memberof headers
+ * @description Removes all headers matching a given key name.
+ * @param {String} key A string for the header key to remove.
+ * @return {undefined} `undefined`
+ * @example
+ * headers.removeAllHeaders("Set-Cookie");
+ * // => Result: Removes all Set-Cookie headers.
+ */
+HeaderSet.prototype.removeAllHeaders = function(key) {
+    key = key.toLowerCase();
+    for (let i = 0, len = this.fields.length; i &lt; len; i++) {
+        if (this.fields[i][0]) {
+            let k = this.fields[i][0];
+            if (k &amp;&amp; k.toLowerCase() === key) {
+                this.fields[i] = [];
+            }
+        }
+    }
+    delete this.hlookup[key];
+};
+
+// not defined in the global `headers` constructor (HeaderSet's fns).
+HeaderSet.prototype.toString = function() {
+    let raw;
+    if (this.type === "request") {
+        raw = this.method + " " + this.path + " HTTP/1." + this.versionMinor;
+    } else if (this.type === "response") {
+        raw = "HTTP/1." + this.versionMinor + " " + this.statusCode + " " + this.statusText;
+    }
+    for (let i = 0, len = this.fields.length; i &lt; len; i++) {
+        if (this.fields[i][0]) {
+            raw += "\r\n" + this.fields[i][0] + ": " + this.fields[i][1];
+        }
+    }
+    return raw;
+};
+
+/**
+ * Define all the export points
+ */
+module.exports = HeaderSet;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    <i>Last updated Tue Sep 27 2016 18:02:54 GMT+0000 (UTC)</i>
+</footer>
+
+<script>prettyPrint();</script>
+</body>
