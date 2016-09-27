@@ -4,9 +4,15 @@ var self = this;
 ?>
 
 
-<?js if (data.summary) { ?>
-<p class="summary"><?js= summary ?></p>
-<?js } ?>
+<h2 class="name" id="<?js= id ?>">
+  <?js= name ?>
+  <small class="line-source">
+    <?js if (data.summary) { ?>
+      <div class="mw-banner <?js= summary ?>"><?js= summary ?></div>
+    <?js } ?>
+    <?js= self.linkto(meta.shortpath, 'Source' + ' (L' + meta.lineno + ')', null, 'line' + meta.lineno) ?>
+  </small>
+</h2>
 
 <?js if (data.description) { ?>
 <div class="description">

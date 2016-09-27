@@ -105,7 +105,9 @@ function updateItemName(item) {
     }
 
     if (attributes && attributes.length) {
-        itemName = util.format( '%s<span class="signature-attributes">%s</span>', itemName, attributes.join(', ') );
+        // assume attribute is just whether or not it's optional (ignore
+        // repeatable & nullable)
+        itemName = `[${itemName}]`;
     }
 
     return itemName;
@@ -332,6 +334,8 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
               return method !== undefined;
             }));
 
+            methods = members.concat(methods);
+
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav +=  linktoFn('', item.name );
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
@@ -341,7 +345,7 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     itemsNav += "<ul class='methods' data-section-content>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, method.name + "()");
+                        itemsNav += linkto(method.longname, method.name + (method.kind === "member" ? "" : "()"));
                         itemsNav += "</li>";
                     });
                     itemsNav += "</ul></section></div>";
