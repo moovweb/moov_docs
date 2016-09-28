@@ -11,4 +11,4 @@ You may like to use `npm link` to reference local versions of your node modules
 `npm run jsdoc` will generate documentations for moov modules. Then index.html
 would have access to the docs.
 
-TODO: describe intricacies with Jenkins deploy job.
+TODO: Describe intricacies with Jenkins deploy job.
