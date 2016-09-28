@@ -23,7 +23,7 @@
  * @namespace fns
  */
 
-/* globals $, body, env, head, html, layers, root, tag, txt, rules, project */
+/* globals $, $body, env, $head, $html, layers, $root, tag, txt, rules, project */
 
 'use strict';
 const url = require('url');
@@ -34,6 +34,7 @@ const banner = require('./banner');
 
 /**
  * @function tag
+ * @summary functions
  * @description Creates a new element. Note that this is &lt;i>not&lt;/i> a Cheerio
  * object: you should wrap it in `$()` if Cheerio methods need to be invoked on
  * it.
@@ -88,6 +89,7 @@ global.tag = function(name, attribs, content) {
 
 /**
  * @function txt
+ * @summary functions
  * @description Creates a new text node.
  * @param {string} content A string for the content that the text node will
  * contain.
@@ -117,16 +119,18 @@ global.txt = function(content) {
 
 /**
  * @function breakpoint
+ * @summary functions
  * @description Calls the debugger and logs a message to the console, provided
  * that the debug mode has been enabled (the moov_debug parameter must exist in
  * the URL and the Dashboard Inspector must be open).
  * @param {String} breakpointId A string for a breakpoint terminal message.
  * @return {undefined} `undefined`
  * @example
- * // If running locally and the url includes ?moov_debug=true, break here.
  * if (env.path.indexOf("moov_debug=true") >= 0) {
  *   breakpoint("Parameter 'moov_debug=true' detected in the URL.");
  * }
+ * // => Result: Breaks in the Dashboard Inspector and logs the appropriate
+ * //    message.
  */
 global.breakpoint = function(breakpointId) {
     if (global.debugEnabled) {
@@ -1313,7 +1317,7 @@ module.exports = exports;
 <br class="clear">
 
 <footer>
-    <i>Last updated Wed Sep 28 2016 17:44:51 GMT+0000 (UTC)</i>
+    <i>Last updated Wed Sep 28 2016 23:12:13 GMT+0000 (UTC)</i>
 </footer>
 
 <script>prettyPrint();</script>
