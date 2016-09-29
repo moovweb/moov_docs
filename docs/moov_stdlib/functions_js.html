@@ -482,7 +482,7 @@ exports.absolutizeSrcs = function() {
  * @summary functions
  * @memberof fns
  * @description Rewrites all `src` attributes for `script` elements. Works on
- * HTML fragments, since this navigates from the root element.
+ * HTML fragments, since this navigates from the root element `$root`.
  * @return {undefined} `undefined`
  * @example
  * fns.rewriteJsSrcs();
@@ -639,7 +639,7 @@ exports.cleanMobileMetaTags = function() {
  * @method removeDesktopMobileIcon
  * @summary functions
  * @memberof fns
- * @description Removes desktop mobile icon.
+ * @description Removes any desktop mobile icons.
  * @return {undefined} `undefined`
  * @example
  * fns.removeDesktopMobileIcon();
@@ -1317,7 +1317,7 @@ module.exports = exports;
 <br class="clear">
 
 <footer>
-    <i>Last updated Thu Sep 29 2016 17:37:35 GMT+0000 (UTC)</i>
+    <i>Last updated Thu Sep 29 2016 18:11:23 GMT+0000 (UTC)</i>
 </footer>
 
 <script>prettyPrint();</script>
