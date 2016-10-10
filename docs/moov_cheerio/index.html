@@ -28,9 +28,20 @@
 
     <section class="readme">
         <article><h1>moov_cheerio</h1><p>moov_cheerio is an extension of <a href="https://github.com/cheeriojs/cheerio">Cheerio</a>,
-a lean server-side implementation of jQuery. moov_cheerio contains additional
-prototype methods, their documentation, and augmented documentation of the
-original Cheerio methods as well.</p>
+a lean server-side implementation of jQuery that allows you to manipulate HTML
+on a server. We use Cheerio to select items in the HTML of the page and
+transform them as necessary.</p>
+<p>Moovweb uses this server-side implementation for performance reasons.
+Transforming a page on the server is far faster than relying on the client to
+manipulate the DOM. This also means that your site doesn't have moov_cheerio
+loaded on it.</p>
+<p>It's important to note that not all jQuery functions are in moov_cheerio. Also
+important to note is that as the transformations by CheerioJS are performed
+server-side, there may be elements on the page that you cannot manipulate with
+moov_cheerio. For example, elements that are inserted on the page by
+client-side JavaScript will not be selectable with moov_cheerio.</p>
+<p>moov_cheerio contains additional prototype methods, their documentation, and
+augmented documentation of the original Cheerio methods as well.</p>
 <h2>Documentation</h2><p>All documentation examples will refer to the following HTML input in a standard
 webpage:</p>
 <pre class="prettyprint source"><code>&lt;ul id=&quot;fruits&quot;>
@@ -53,7 +64,7 @@ dependencies locally using:</p>
 <br class="clear">
 
 <footer>
-    <i>Last updated Fri Sep 30 2016 17:56:49 GMT+0000 (UTC)</i>
+    <i>Last updated Mon Oct 10 2016 20:41:29 GMT+0000 (UTC)</i>
 </footer>
 
 <script>prettyPrint();</script>
