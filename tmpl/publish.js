@@ -337,9 +337,9 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
                     });
                     itemsNav += "</ul></div>";
                 } else {
-                    itemsNav += "<li>";
+                    itemsNav += "<div class='module'>";
                     itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''));
-                    itemsNav += "</li>";
+                    itemsNav += "</div>";
                 }
                 itemsSeen[item.longname] = true;
             }
