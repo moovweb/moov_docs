@@ -1,24 +1,28 @@
 <body>
 
-<div data-section="accordion" id="content-nav">
-  <section>
-      <?js= this.nav ?>
-  </section>
+<div class="split-container">
+  <div data-section="accordion" id="content-nav" class="media">
+    <?js= this.nav ?>
+  </div>
+
+  <div id="main" class="data">
+      <?js if (title != 'Home') { ?>
+      <div class="breadcrumbs">
+        <a href="/">Home</a>
+        &raquo; <a href="/docs">Documentation</a>
+        &raquo; <a href="/modules/<?js= env.opts._[0].split('/')[2] ?>/index"><?js= env.opts._[0].split('/')[2] ?></a>
+        &raquo; <?js= title ?>
+      </div>
+      <h1 class="page-title"><?js= title ?></h1>
+      <?js } ?>
+
+      <?js= content ?>
+      <div class="timestamp">
+          <i>Last updated <?js= new Date() ?></i>
+      </div>
+  </div>
 </div>
 
-<div id="main" class="copy">
-    <?js if (title != 'Home') { ?>
-    <h1 class="page-title"><?js= title ?></h1>
-    <?js } ?>
-
-    <?js= content ?>
-</div>
-
-<br class="clear">
-
-<footer>
-    <i>Last updated <?js= new Date() ?></i>
-</footer>
 
 <script>prettyPrint();</script>
 </body>

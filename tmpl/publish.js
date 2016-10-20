@@ -9,19 +9,24 @@ var path = require('jsdoc/path');
 var taffy = require('taffydb').taffy;
 var template = require('jsdoc/template');
 var util = require('util');
+function sanitize(link){
+    link = link.replace(/(\.js)/g, "_js")
+            .replace(/(\-)/g, "_");
+
+    return link;
+}
 function sanitizeLinkTo() {
     return function(){
-        result = helper.linkto.apply(this, arguments);
+        var result = helper.linkto.apply(this, arguments);
         if (typeof(result) !== undefined){
-            result = sanitize(result)
+            result = sanitize(result);
         }
         return result;
-    }
+    };
 }
 var htmlsafe = helper.htmlsafe;
 var linkto = sanitizeLinkTo();
 var resolveAuthorLinks = helper.resolveAuthorLinks;
-var scopeToPunc = helper.scopeToPunc;
 var hasOwnProp = Object.prototype.hasOwnProperty;
 
 var data;
@@ -29,13 +34,6 @@ var view;
 
 var outdir = path.normalize(env.opts.destination);
 
-function sanitize(link){
-    link = link.replace(/(\.js)/g, "_js")
-            .replace(/(\-)/g, "_")
-            .replace(/data_section_title\"/g, "data-section-title")
-
-    return link;
-}
 
 function find(spec) {
     return helper.find(data, spec);
@@ -231,16 +229,16 @@ function generate(type, title, docs, filename, resolveLinks) {
     };
 
     var outpath = path.join(outdir, filename),
-        html = view.render('container.tmpl', docData)
+        html = view.render('container.tmpl', docData);
 
-        outpath = sanitize(outpath)
+        outpath = sanitize(outpath);
 
     if (resolveLinks) {
         html = helper.resolveLinks(html);// turn {@link foo} into <a href="foodoc.html">foo</a>
 
     }
     html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
-    html = html.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
+    html = html.replace(/\.html</g, "__KEEP_STRING_SAFE_2__");
     html = html.replace(/\.html/g, "");
     html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
     html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
@@ -319,47 +317,37 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
         items.forEach(function(item) {
             var methods = find({kind:'function', memberof: item.longname});
             var members = find({kind:'member', memberof: item.longname});
-            var functions = [];
-
-            methods.forEach(function (method, i) {
-                if (method.comment.indexOf("@method") > -1) {
-                    method.name = "." + method.name;
-                } else {
-                  delete methods[i];
-                  functions.push(method);
-                }
-            });
-
-            methods = functions.concat(methods.filter(function(method) {
-              return method !== undefined;
-            }));
 
             methods = members.concat(methods);
+            methods.forEach(function (method) {
+                method.name = "." + method.name;
+            });
 
             if ( !hasOwnProp.call(item, 'longname') ) {
                 itemsNav +=  linktoFn('', item.name );
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
                 if (methods.length) {
-                    itemsNav += "<div data-section='accordion'><section class='active'>"
-                    itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''), "\" data-section-title");
-                    itemsNav += "<ul class='methods' data-section-content>";
+                    itemsNav += "<div class='L1-container'>";
+                    itemsNav += "<div class='L1-button'>" + linktoFn(item.longname, item.name + " Namespace") + "</div>";
+                    itemsNav += "<ul class='methods L1-content'>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
                         itemsNav += linkto(method.longname, method.name + (method.kind === "member" ? "" : "()"));
                         itemsNav += "</li>";
                     });
-                    itemsNav += "</ul></section></div>";
+                    itemsNav += "</ul></div>";
                 } else {
-                    itemsNav += "<li>"
+                    itemsNav += "<div class='module'>";
                     itemsNav += linktoFn(item.longname, item.name.replace(/^module:/, ''));
-                    itemsNav += "</li>"
+                    itemsNav += "</div>";
                 }
                 itemsSeen[item.longname] = true;
             }
         });
 
         if (itemsNav !== '') {
-            nav += '<div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>' + itemHeading + '</a><ul data-section-content>' + itemsNav + '</ul></section></div>';
+            // note: toggler structure with `itemHeading` and `itemsNav` removed
+            nav += itemsNav;
         }
     }
 
@@ -389,10 +377,12 @@ function linktoExternal(longName, name) {
  * @return {string} The HTML for the navigation sidebar.
  */
 function buildNav(members) {
-    var nav = '<ul class="doc-sidebar" data-section-content id="content-sidebar">';
+    var nav = '<div class="module-sidebar" id="content-sidebar">';
     var seen = {};
     var seenTutorials = {};
+    var name = env.opts._[0].split('/')[2];
 
+    nav += "<a href='/modules/" + name + "/index'>" + name + " README</a>";
     nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
@@ -414,19 +404,22 @@ function buildNav(members) {
 
         if (!globalNav) {
             // turn the heading into a link so you can actually get to the global page
-            nav += '<h3>' + linkto('global', 'Global') + '</h3>';
+            nav += '<h3>' + linkto('global', 'Global Namespace') + '</h3>';
         }
         else {
-            nav += '<div data-section="accordion"><section class="active"><a href="#" class="module-one" data-section-title>Global</a><ul data-section-content>' + globalNav + '</ul></section></div>';
+            nav += '<div class="L1-container">';
+            nav += '<div class="L1-button"><a href="/modules/' + name + '/global"><em>Global</em> Namespace</a></div>';
+            nav += '<ul class="L1-content">' + globalNav + '</ul>';
+            nav += '</div>';
         }
     }
 
     nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
-    nav = nav.replace(/\.html\</g, "__KEEP_STRING_SAFE_2__");
+    nav = nav.replace(/\.html</g, "__KEEP_STRING_SAFE_2__");
     nav = nav.replace(/\.html/g,'');
     nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
     nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
-    nav += "</ul>"
+    nav += "</div>";
     return nav;
 }
 
@@ -588,7 +581,9 @@ exports.publish = function(taffyData, opts, tutorials) {
     data().each(function(doclet) {
         doclet.ancestors = getAncestorLinks(doclet);
         for(var a in doclet.ancestors){
-            doclet.ancestors[a] = sanitize(doclet.ancestors[a])
+            if (doclet.ancestors.hasOwnProperty(a)) {
+                doclet.ancestors[a] = sanitize(doclet.ancestors[a]);
+            }
         }
 
         if (doclet.kind === 'member') {
@@ -607,9 +602,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     members.tutorials = tutorials.children;
 
     // output pretty-printed source files by default
-    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false
-        ? true
-        : false;
+    var outputSourceFiles = conf.default && conf.default.outputSourceFiles !== false ? true : false;
 
     // add template helpers
     view.find = find;
@@ -629,7 +622,7 @@ exports.publish = function(taffyData, opts, tutorials) {
     }
 
     if (members.globals.length) {
-        generate('', 'Global', [{kind: 'globalobj'}], globalUrl);
+        generate('', '<em>Global</em> Namespace', [{kind: 'globalobj'}], globalUrl);
     }
 
     // index page displays information from package.json and lists files
@@ -663,7 +656,7 @@ exports.publish = function(taffyData, opts, tutorials) {
 
         var myNamespaces = helper.find(namespaces, {longname: longname});
         if (myNamespaces.length) {
-            generate('Namespace', myNamespaces[0].name, myNamespaces, helper.longnameToUrl[longname]);
+            generate('Namespace', myNamespaces[0].name + " Namespace", myNamespaces, helper.longnameToUrl[longname]);
         }
 
         var myMixins = helper.find(mixins, {longname: longname});
