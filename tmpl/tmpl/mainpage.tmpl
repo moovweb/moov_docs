@@ -4,6 +4,11 @@ var self = this;
 ?>
 
 <?js if (data.readme) { ?>
+    <div class="breadcrumbs">
+      <a href="/">Home</a>
+      &raquo; <a href="/docs">Documentation</a>
+      &raquo; <?js= env.opts._[0].split('/')[2] ?>
+    </div>
     <section class="readme">
         <article><?js= data.readme ?></article>
     </section>

@@ -38,6 +38,7 @@
     <?js if (doc.kind === 'module' && doc.modules) { ?>
         <?js if (doc.description) { ?>
             <p class="description"><?js= doc.description ?></p>
+            <hr />
         <?js } ?>
 
         <?js doc.modules.forEach(function(module) { ?>
@@ -48,6 +49,7 @@
     <?js } else { ?>
         <?js if (doc.description) { ?>
             <p class="description"><?js= doc.description ?></p>
+            <hr />
         <?js } ?>
 
         <?js= self.partial('details.tmpl', doc) ?>
