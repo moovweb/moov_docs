@@ -237,9 +237,11 @@ function generate(type, title, docs, filename, resolveLinks) {
         html = helper.resolveLinks(html);// turn {@link foo} into <a href="foodoc.html">foo</a>
 
     }
-    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
-    html = html.replace(/\.html</g, "__KEEP_STRING_SAFE_2__");
+    html = html.replace(/\.html">\./g, "__KEEP_STRING_SAFE_0__"); // sidebar
+    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__"); // plaintext/examples
+    html = html.replace(/\.html</g, "__KEEP_STRING_SAFE_2__"); // title
     html = html.replace(/\.html/g, "");
+    html = html.replace(/__KEEP_STRING_SAFE_0__/g, ".html\">.");
     html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
     html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     fs.writeFileSync(outpath, html, 'utf8');
@@ -414,9 +416,11 @@ function buildNav(members) {
         }
     }
 
-    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__");
-    nav = nav.replace(/\.html</g, "__KEEP_STRING_SAFE_2__");
+    nav = nav.replace(/\.html">\./g, "__KEEP_STRING_SAFE_0__"); // sidebar
+    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__"); // plaintext/examples
+    nav = nav.replace(/\.html</g, "__KEEP_STRING_SAFE_2__"); // title
     nav = nav.replace(/\.html/g,'');
+    nav = nav.replace(/__KEEP_STRING_SAFE_0__/g, ".html\">.");
     nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
     nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
     nav += "</div>";
