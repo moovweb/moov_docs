@@ -330,11 +330,11 @@ function buildMemberNav(items, itemHeading, itemsSeen, linktoFn) {
             } else if ( !hasOwnProp.call(itemsSeen, item.longname) ) {
                 if (methods.length) {
                     itemsNav += "<div class='L1-container'>";
-                    itemsNav += "<div class='L1-button'>" + linktoFn(item.longname, item.name + " Namespace") + "</div>";
+                    itemsNav += "<div class='L1-button'>" + linktoFn(item.longname, item.name + " Namespace", "L1") + "</div>";
                     itemsNav += "<ul class='methods L1-content'>";
                     methods.forEach(function (method) {
                         itemsNav += "<li data-type='method'>";
-                        itemsNav += linkto(method.longname, method.name + (method.kind === "member" ? "" : "()"));
+                        itemsNav += linkto(method.longname, method.name + (method.kind === "member" ? "" : "()"), "L1");
                         itemsNav += "</li>";
                     });
                     itemsNav += "</ul></div>";
@@ -384,7 +384,9 @@ function buildNav(members) {
     var seenTutorials = {};
     var name = env.opts._[0].split('/')[2];
 
-    nav += "<a href='/modules/" + name + "/index'>" + name + " README</a>";
+    nav += "<div class='sidebar-head'>" + name + "</div>";
+    nav += "<div class='sidebar-body'>";
+    nav += "<a href='/modules/" + name + "/index' class='L1'>README</a>";
     nav += buildMemberNav(members.classes, 'Classes', seen, linkto);
     nav += buildMemberNav(members.modules, 'Modules', {}, linkto);
     nav += buildMemberNav(members.externals, 'Externals', seen, linktoExternal);
@@ -399,7 +401,7 @@ function buildNav(members) {
 
         members.globals.forEach(function(g) {
             if ( g.kind !== 'typedef' && !hasOwnProp.call(seen, g.longname) ) {
-                globalNav += '<li>' + linkto(g.longname, g.name) + '</li>';
+                globalNav += '<li>' + linkto(g.longname, g.name, "L1") + '</li>';
             }
             seen[g.longname] = true;
         });
@@ -410,11 +412,13 @@ function buildNav(members) {
         }
         else {
             nav += '<div class="L1-container">';
-            nav += '<div class="L1-button"><a href="/modules/' + name + '/global"><em>Global</em> Namespace</a></div>';
+            nav += '<div class="L1-button"><a href="/modules/' + name + '/global" class="L1"><em>Global</em> Namespace</a></div>';
             nav += '<ul class="L1-content">' + globalNav + '</ul>';
             nav += '</div>';
         }
     }
+
+    nav += "</div>";
 
     nav = nav.replace(/\.html">\./g, "__KEEP_STRING_SAFE_0__"); // sidebar
     nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__"); // plaintext/examples
