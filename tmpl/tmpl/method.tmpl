@@ -51,7 +51,9 @@ var self = this;
 
 <?js if (data.params && params.length) { ?>
     <h3>Parameters</h3>
-    <?js= this.partial('params.tmpl', params) ?>
+    <div class="table-wrapper">
+      <?js= this.partial('params.tmpl', params) ?>
+    </div>
 <?js } ?>
 
 <?js if (data.kind !== 'module' && data.requires && data.requires.length) { ?>
