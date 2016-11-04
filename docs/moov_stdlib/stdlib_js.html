@@ -23,7 +23,7 @@
     
     <section>
         <article>
-            <pre class="source"><code class="language-javascript">/* globals $this, cheerio, env, head, html, root, scoped$ */
+            <pre class="source"><code class="language-javascript">/* globals $this, cheerio, env, scoped$ */
 /* exported PROXY_TO_UPSTREAM */
 
 'use strict';
@@ -133,7 +133,7 @@ module.exports = function(ctxObj) {
      * access and modify specific elements outside the scope using
      * `$body.find()`. 
      * @param {Object} $ A Cheerio object to traverse down.
-     * @returns {Object} A modified Cheerio reference given the original input
+     * @return {Object} A modified Cheerio reference given the original input
      * selector as the new "root."
      * @example
      * scoped$($body, function(){
@@ -299,7 +299,7 @@ module.exports = function(ctxObj) {
 
 
       <div class="timestamp">
-          <i>Last updated Fri Nov 04 2016 23:25:12 GMT+0000 (UTC)</i>
+          <i>Last updated Fri Nov 04 2016 23:33:15 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
