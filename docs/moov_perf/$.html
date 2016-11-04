@@ -1,0 +1,647 @@
+<body>
+
+<div class="split-container">
+  <div data-section="accordion" id="content-nav" class="module-nav media">
+    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_perf</div><div class='sidebar-body'><a href='/modules/moov_perf/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="$" class="L1">$ Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="$#.optimizeImg" class="L1">.optimizeImg()</a></li><li data-type='method'><a href="$#.quality" class="L1">.quality()</a></li></ul></div><div class='L1-container'><div class='L1-button'><a href="perf" class="L1">perf Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="perf#.blacklistContains" class="L1">.blacklistContains()</a></li><li data-type='method'><a href="perf#.ignore" class="L1">.ignore()</a></li><li data-type='method'><a href="perf#.ignored" class="L1">.ignored()</a></li><li data-type='method'><a href="perf#.optimizedAttrs" class="L1">.optimizedAttrs()</a></li><li data-type='method'><a href="perf#.optimizeImageAttribs" class="L1">.optimizeImageAttribs()</a></li></ul></div></div></div>
+  </div>
+
+  <div id="main" class="module-content data">
+      
+      <div class="breadcrumbs">
+        <a href="/">Home</a>
+        &raquo; <a href="/docs">Documentation</a>
+        &raquo; <a href="/modules/moov_perf/index">moov_perf</a>
+        &raquo; $ Namespace
+      </div>
+      <h1 class="page-title">$ Namespace</h1>
+      
+
+      
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <p class="description">An extended Cheerio engine containing specific $ namespace methods for
+performance optimizations.</p>
+            <hr />
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+        
+            
+
+    
+
+    <h2 class="name" id=".optimizeImg">
+        .optimizeImg<span class="signature">([opts])</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_perf">moov_perf</div>
+            
+            <a href="moov_perf_js#line75">Source (L75)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Modifies the `src` attribute of selected `img` tags to run
+through Moovweb's image-optimization service at opt.moovweb.net, which
+provides configurable settings for optimizing images. Utilizes Perf's
+`.optimizeImageAttributes()` method for each element in the matched set
+in order to rewrite all `src` attribute URLs to the opt.moovweb.net
+optimizer, with the given settings.
+</p>
+
+
+
+
+
+
+
+
+
+    <h3>Parameters</h3>
+    <div class="table-wrapper">
+      
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>opts</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                An object containing optimization options. The
+default options object contains the settings that come from Perf's
+`.optimizeImageAttribs()` method (the list of attributes attached to the
+input node, along with the settings
+`{ link_encoded: false, preserve_aspect: true }`, unless the host is
+blacklisted, in which case, the object only contains
+`bypass_attributes: true`, a reserved property-value pair for knowing not
+to set height or width HTML attributes). The usable attributes (that get
+passed in to other Perf methods) are as follows:
+                <h5>Properties</h5>
+                
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>width</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A number or a string containing the
+number for the desired pixel width.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>height</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A number or string containing the
+number for the desired pixel height.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>link_encoded</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A boolean for whether the link
+should be base64-encoded.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>preserve_aspect</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A boolean for whether the aspect
+ratio should be preserved, provded that only one dimension is given. If
+both dimensions are given, width is given priority. If both dimensions
+are set, this setting is ignored.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>quality</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A number or string containing the
+number for the desired quality, on a scale from 1 (worst) to 100 (best).</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  [
+                  <code>format</code>
+                  ]
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                <em>Optional.</em>
+                A string containing the desired file format.
+Options include jpg, png, and webp.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    The updated form of the original Cheerio matched-set.
+object.
+</p>
+
+
+    
+
+
+    <h3>Examples</h3>
+    
+    <pre><code class="language-javascript">const Perf = require("moov_perf");
+let perf = new Perf(cheerio);
+$body.find("img").optimizeImg();
+// => HTML input:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns: original object associated with $body.find("img")
+// => HTML output:
+//    &lt;body>
+//      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;preserve_aspect=1" alt="selfie">
+//    &lt;/body></code></pre>
+
+    <pre><code class="language-javascript">const Perf = require("moov_perf");
+let perf = new Perf(cheerio);
+perf.ignore("http://www.google.com/");
+$body.find("img").optimizeImg({
+  height: 666,
+  width: 777,
+  quality: 88,
+  format: 'webp'
+});
+// => HTML input:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+//      &lt;img src="http://www.google.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns: original object associated with $body.find("img")
+// => HTML output:
+//    &lt;body>
+//      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect=1&amp;quality=88&amp;format=webp" alt="selfie" height="666" width="777" quality="88" format="webp">
+//      &lt;img src="http://www.google.com/img.jpeg" alt="selfie" height="666" width="777" quality="88" format="webp">
+//    &lt;/body></code></pre>
+
+    <pre><code class="language-javascript">const Perf = require("moov_perf");
+let perf = new Perf(cheerio);
+$body.find("img").optimizeImg({
+  width: 777,
+  quality: 88,
+  preserve_aspect: false,
+  link_encoded: true
+});
+// => HTML input:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns: original object associated with $body.find("img")
+// => HTML output:
+//    &lt;body>
+//      &lt;img src="//opt.moovweb.net/img?img=aHR0cDovL3d3dy5iaW5nLmNvbS9pbWcuanBlZw==&amp;linkEncoded=1&amp;width=777&amp;quality=80" alt="selfie" width="777" quality="80" preserve_aspect="false" link_encoded="true">
+//    &lt;/body></code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id=".quality">
+        .quality<span class="signature">(quality)</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_perf">moov_perf</div>
+            
+            <a href="moov_perf_js#line21">Source (L21)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Sets the quality for an optimized image as an alternative
+shorthand to the quality setting as a second object parameter to
+`.optimizeImg()`. This sets the quality as an HTML attribute, which can
+then be read by the opt.moovweb.net optimizer application as a way to
+dramatically reduce image quality without reducing fidelity. This should
+come before any call to `.optimizeImg()`.
+</p>
+
+
+
+
+
+
+
+
+
+    <h3>Parameters</h3>
+    <div class="table-wrapper">
+      
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  
+                  <code>quality</code>
+                  
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                
+                A number or string containing the number
+for the desired quality from 1 (worst) to 100 (best).</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    The updated form of the original Cheerio matched-set
+object.
+</p>
+
+
+    
+
+
+    <h3>Examples</h3>
+    
+    <pre><code class="language-javascript">const Perf = require("moov_perf");
+let perf = new Perf(cheerio);
+$body.find("img").quality("88");
+// => HTML input:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns: original object associated with $body.find("img")
+// => HTML output:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie" quality="88">
+//    &lt;/body></code></pre>
+
+    <pre><code class="language-javascript">const Perf = require("moov_perf");
+let perf = new Perf(cheerio);
+$body.find("img").quality("88").optimizeImg();
+// => HTML input:
+//    &lt;body>
+//      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns: original object associated with $body.find("img")
+// => HTML output:
+//    &lt;body>
+//      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;preserve_aspect=1&amp;quality=88" alt="selfie" quality="88">
+//    &lt;/body></code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+      <div class="timestamp">
+          <i>Last updated Fri Nov 04 2016 23:25:12 GMT+0000 (UTC)</i>
+      </div>
+  </div>
+</div>
+</body>

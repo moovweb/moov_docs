@@ -2,7 +2,7 @@
 
 <div class="split-container">
   <div data-section="accordion" id="content-nav" class="module-nav media">
-    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_perf</div><div class='sidebar-body'><a href='/modules/moov_perf/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="Perf" class="L1">Perf Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="Perf#blacklist" class="L1">.blacklist</a></li><li data-type='method'><a href="Perf#selector" class="L1">.selector</a></li><li data-type='method'><a href="Perf#.selector#optimizeImg" class="L1">.selector#optimizeImg()</a></li><li data-type='method'><a href="Perf#.selector#quality" class="L1">.selector#quality()</a></li><li data-type='method'><a href="Perf#blacklistContains" class="L1">.blacklistContains()</a></li><li data-type='method'><a href="Perf#ignore" class="L1">.ignore()</a></li><li data-type='method'><a href="Perf#ignored" class="L1">.ignored()</a></li><li data-type='method'><a href="Perf#optimizedAttrs" class="L1">.optimizedAttrs()</a></li><li data-type='method'><a href="Perf#optimizeImageAttribs" class="L1">.optimizeImageAttribs()</a></li></ul></div><div class='module'><a href="module_moov_perf">moov_perf</a></div></div></div>
+    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_perf</div><div class='sidebar-body'><a href='/modules/moov_perf/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="$" class="L1">$ Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="$#.optimizeImg" class="L1">.optimizeImg()</a></li><li data-type='method'><a href="$#.quality" class="L1">.quality()</a></li></ul></div><div class='L1-container'><div class='L1-button'><a href="perf" class="L1">perf Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="perf#.blacklistContains" class="L1">.blacklistContains()</a></li><li data-type='method'><a href="perf#.ignore" class="L1">.ignore()</a></li><li data-type='method'><a href="perf#.ignored" class="L1">.ignored()</a></li><li data-type='method'><a href="perf#.optimizedAttrs" class="L1">.optimizedAttrs()</a></li><li data-type='method'><a href="perf#.optimizeImageAttribs" class="L1">.optimizeImageAttribs()</a></li></ul></div></div></div>
   </div>
 
   <div id="main" class="module-content data">
@@ -23,43 +23,66 @@
     
     <section>
         <article>
-            <pre class="source"><code class="language-javascript">'use strict';
+            <pre class="source"><code class="language-javascript">/**
+ * A namespace containing methods for performance optimizations.
+ * @namespace perf
+ */
 
 /**
- * @module moov_perf
+ * An extended Cheerio engine containing specific $ namespace methods for
+ * performance optimizations.
+ * @namespace $
  */
-const url = require('url'),
-    moov_opt_host = 'opt2.moovweb.net/img';
 
-/**
- * @param {Object} selector Perf extends an existing selector engine prototype.
- For Moovweb Optimize, we use our modified version of Cheerio.
- * @class
- * @alias Perf
- */
+'use strict';
+const url = require('url');
+const moov_opt_host = 'opt2.moovweb.net/img';
+
 function Perf(selector) {
-
-    /**
-     * @member {Object}
-     */
     this.selector = selector;
-    /**
-     * @member {Array.&lt;string>}
-     */
     this.blacklist = {};
     let perf = this;
 
     /**
-     * Apply the quality data attribute to a selection of nodes
-     * @param {string} quality quality data
-     * @returns {Object.&lt;string, boolean>} selector engine(i.e. moov_cheerio)
-     * @memberof Perf
+     * @method quality
+     * @summary moov_perf
+     * @memberof $
+     * @description Sets the quality for an optimized image as an alternative
+     * shorthand to the quality setting as a second object parameter to
+     * `.optimizeImg()`. This sets the quality as an HTML attribute, which can
+     * then be read by the opt.moovweb.net optimizer application as a way to
+     * dramatically reduce image quality without reducing fidelity. This should
+     * come before any call to `.optimizeImg()`.
+     * @param {String|Number} quality A number or string containing the number
+     * for the desired quality from 1 (worst) to 100 (best).
+     * @return {Object} The updated form of the original Cheerio matched-set
+     * object.
      * @example
-     *
-     * const perf = new moov_perf(cheerio)
-     * let $ = cheerio.load('&lt;img src="/selfie.jpg">&lt;/img>');
-     * $('img').quality('88');
-     *
+     * const Perf = require("moov_perf");
+     * let perf = new Perf(cheerio);
+     * $body.find("img").quality("88");
+     * // => HTML input:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+     * //    &lt;/body>
+     * // => Returns: original object associated with $body.find("img")
+     * // => HTML output:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie" quality="88">
+     * //    &lt;/body>
+     * @example
+     * const Perf = require("moov_perf");
+     * let perf = new Perf(cheerio);
+     * $body.find("img").quality("88").optimizeImg();
+     * // => HTML input:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+     * //    &lt;/body>
+     * // => Returns: original object associated with $body.find("img")
+     * // => HTML output:
+     * //    &lt;body>
+     * //      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;preserve_aspect=1&amp;quality=88" alt="selfie" quality="88">
+     * //    &lt;/body>
      */
     selector.prototype.quality = function(quality) {
         if (quality !== undefined || quality !== '') {
@@ -75,31 +98,93 @@ function Perf(selector) {
     };
 
     /**
-    * Modify the image src of selected img tags to optimize the image
-    * @param {object} [opts] settings to apply to the selected nodes
-    * @config {integer} [height] The height of the optimized image
-    * @config {integer} [width]  The width of the optimized image
-    * @config {integer} [quality] Fidelity of image (lower means smaller and grainier)
-    * @config {boolean} [link_encoded] Boolean Set height of the optimized image
-    * @config {boolean} [preserve_aspect] True or False,      * @config {boolean} [preserve_aspect] True or False,
-    * @config {string} [format] Sets the image type to webp, jpeg, or png
-    * @returns {Object} selector engine(i.e. moov_cheerio)
-    * @memberof Perf
-    * @example
-    *
-    * let html = '&lt;img src="http://www.moovweb.com/selfie.jpg">&lt;/img>'
-    * let $ = cheerio.load(html);
-    * let args = {
-    *     height: 666,
-    *     width: 777,
-    *     quality: 88,
-    *     format: 'webp'
-    * };
-    * let imgs = $('img').optimizeImg(args);
-    * console.log(imgs[0].attribs.src)
-    * => "//opt.moovweb.net/img?img=http://www.moovweb.com/selfie.jpg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect=1&amp;quality=88&amp;format=webp"
-    *
-    */
+     * @method optimizeImg
+     * @summary moov_perf
+     * @memberof $
+     * @description Modifies the `src` attribute of selected `img` tags to run
+     * through Moovweb's image-optimization service at opt.moovweb.net, which
+     * provides configurable settings for optimizing images. Utilizes Perf's
+     * `.optimizeImageAttributes()` method for each element in the matched set
+     * in order to rewrite all `src` attribute URLs to the opt.moovweb.net
+     * optimizer, with the given settings.
+     * @param {Object} [opts] An object containing optimization options. The
+     * default options object contains the settings that come from Perf's
+     * `.optimizeImageAttribs()` method (the list of attributes attached to the
+     * input node, along with the settings
+     * `{ link_encoded: false, preserve_aspect: true }`, unless the host is
+     * blacklisted, in which case, the object only contains
+     * `bypass_attributes: true`, a reserved property-value pair for knowing not
+     * to set height or width HTML attributes). The usable attributes (that get
+     * passed in to other Perf methods) are as follows:
+     * @param {Number|String} [opts.width] A number or a string containing the
+     * number for the desired pixel width.
+     * @param {Number|String} [opts.height] A number or string containing the
+     * number for the desired pixel height.
+     * @param {Boolean} [opts.link_encoded] A boolean for whether the link
+     * should be base64-encoded.
+     * @param {Boolean} [opts.preserve_aspect] A boolean for whether the aspect
+     * ratio should be preserved, provded that only one dimension is given. If
+     * both dimensions are given, width is given priority. If both dimensions
+     * are set, this setting is ignored.
+     * @param {Number|String} [opts.quality] A number or string containing the
+     * number for the desired quality, on a scale from 1 (worst) to 100 (best).
+     * @param {String} [opts.format] A string containing the desired file format.
+     * Options include jpg, png, and webp.
+     * @return {Object} The updated form of the original Cheerio matched-set.
+     * object.
+     * @example
+     * const Perf = require("moov_perf");
+     * let perf = new Perf(cheerio);
+     * $body.find("img").optimizeImg();
+     * // => HTML input:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+     * //    &lt;/body>
+     * // => Returns: original object associated with $body.find("img")
+     * // => HTML output:
+     * //    &lt;body>
+     * //      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;preserve_aspect=1" alt="selfie">
+     * //    &lt;/body>
+     * @example
+     * const Perf = require("moov_perf");
+     * let perf = new Perf(cheerio);
+     * perf.ignore("http://www.google.com/");
+     * $body.find("img").optimizeImg({
+     *   height: 666,
+     *   width: 777,
+     *   quality: 88,
+     *   format: 'webp'
+     * });
+     * // => HTML input:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+     * //      &lt;img src="http://www.google.com/img.jpeg" alt="selfie">
+     * //    &lt;/body>
+     * // => Returns: original object associated with $body.find("img")
+     * // => HTML output:
+     * //    &lt;body>
+     * //      &lt;img src="//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fimg.jpeg&amp;linkEncoded=0&amp;width=777&amp;height=666&amp;preserve_aspect=1&amp;quality=88&amp;format=webp" alt="selfie" height="666" width="777" quality="88" format="webp">
+     * //      &lt;img src="http://www.google.com/img.jpeg" alt="selfie" height="666" width="777" quality="88" format="webp">
+     * //    &lt;/body>
+     * @example
+     * const Perf = require("moov_perf");
+     * let perf = new Perf(cheerio);
+     * $body.find("img").optimizeImg({
+     *   width: 777,
+     *   quality: 88,
+     *   preserve_aspect: false,
+     *   link_encoded: true
+     * });
+     * // => HTML input:
+     * //    &lt;body>
+     * //      &lt;img src="http://www.bing.com/img.jpeg" alt="selfie">
+     * //    &lt;/body>
+     * // => Returns: original object associated with $body.find("img")
+     * // => HTML output:
+     * //    &lt;body>
+     * //      &lt;img src="//opt.moovweb.net/img?img=aHR0cDovL3d3dy5iaW5nLmNvbS9pbWcuanBlZw==&amp;linkEncoded=1&amp;width=777&amp;quality=80" alt="selfie" width="777" quality="80" preserve_aspect="false" link_encoded="true">
+     * //    &lt;/body>
+     */
     selector.prototype.optimizeImg = function(opts) {
         for (let i = 0; i &lt; this.length; i++) {
             let opt_attrs = perf.optimizeImageAttribs(this[i], opts);
@@ -113,24 +198,35 @@ function Perf(selector) {
     selector.prototype.perf = this;
 }
 
-// Return a parsed version of an img src (or any url, really)
 function parseUrl(src) {
+    // Return a parsed version of an img src (or any url, really)
     return url.parse(src, false, true);
 }
 
-// Is the domain blacklisted?
 /**
- * Check whether the domian is blacklisted
- * @param {string} domain
- * @returns {boolean} Return true if domain is in the blacklist
+ * @method blacklistContains
+ * @summary moov_perf
+ * @memberof perf
+ * @description Checks whether the domain is blacklisted. Note that domains to
+ * check should not include any protocols or paths.
+ * @param {String} domain A string for the domain to check.
+ * @return {boolean} A boolean for whether the domain is in the blacklist.
+ * @example
+ * const Perf = require("moov_perf");
+ * let perf = new Perf(cheerio);
+ * perf.ignore("http://www.google.com/");
+ * perf.blacklistContains("www.google.com");
+ * // => Returns: true
+ * perf.blacklistContains("http://www.google.com/");
+ * // => Returns: false
  */
 Perf.prototype.blacklistContains = function(domain) {
     return this.ignored()[domain] === true ? true : false;
 };
 
-// helper used to return a new object with cloned properties of two other objects
-// note: properties in opts will override those in defaults
 function extend(defaults, opts) {
+    // helper used to return a new object with cloned properties of two other objects
+    // note: properties in opts will override those in defaults
     let ext = {};
     var prop;
     for (prop in defaults) {
@@ -146,13 +242,48 @@ function extend(defaults, opts) {
     return ext;
 }
 
-// Takes a img src string and an options object
-// Returns a map of attributes to apply to an image node
 /**
- * Optimize attributes
- * @param {string} domain image source string
- * @param {Object.&lt;string, Object>} options options of optimization
- * @returns {Object.&lt;string, Object>} Return a map of attributes to apply to an image node
+ * @method optimizedAttrs
+ * @summary moov_perf
+ * @memberof perf
+ * @description Provides a first pass to convert an object containing options
+ * meant to be applied to an optimized image element (as passed into other
+ * public helper methods), including a newly-generated `src` attribute.
+ * @param {String} domain A string for the image source.
+ * @param {Object} [opts] An object containing optimization options. The
+ * default options object is `{ link_encoded: false, preserve_aspect: true }`,
+ * unless the host is blacklisted (in which case, the object only contains 
+ * `bypass_attributes: true`, a reserved property-value pair for knowing not to
+ * set height or width HTML attributes). The usable attributes are as follows:
+ * @param {Boolean} [opts.bypass_attributes] A boolean for whether
+ * attributes should be bypassed from the optimized image elemetnt.
+ * @param {Number|String} [opts.width] A number or a string containing the
+ * number for the desired pixel width.
+ * @param {Number|String} [opts.height] A number or string containing the number
+ * for the desired pixel height.
+ * @param {Boolean} [opts.link_encoded] A boolean for whether the link
+ * should be base64-encoded.
+ * @param {Boolean} [opts.preserve_aspect] A boolean for whether the aspect
+ * ratio should be preserved, provded that only one dimension is given. If both
+ * dimensions are given, width is given priority. If both dimensions are set,
+ * this setting is ignored.
+ * @param {Number|String} [opts.quality] A number or string containing the
+ * number for the desired quality, on a scale from 1 (worst) to 100 (best).
+ * @param {String} [opts.format] A string containing the desired file format.
+ * Options include jpg, png, and webp.
+ * @return {Object} A first-pass object containing attributes to apply to an
+ * image node.
+ * @example
+ * const Perf = require("moov_perf");
+ * let perf = new Perf(cheerio);
+ * perf.ignore("www.moovweb.com");
+ * perf.optimizedAttrs("http://www.moovweb.com/img.jpg", {height: 300});
+ * Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }
+ * @example
+ * let perf = new Perf(cheerio);
+ * perf.ignore("www.moovweb.com");
+ * perf.optimizedAttrs("http://www.google.com/img.jpg", {height: 300});
+ * Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }
  */
 Perf.prototype.optimizedAttrs = function (src, opts) {
     let parsed_src = parseUrl(src, false, true);
@@ -234,12 +365,59 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
     return attrs;
 };
 
-// Clone the attributes of a node and return the optimized form
 /**
- * Optimize image attributes
- * @param {string} node image node
- * @param {Object.&lt;string, Object>} options options of optimization
- * @returns {Object.&lt;string, Object>} Return the optimized form of attributes
+ * @method optimizeImageAttribs
+ * @summary moov_perf
+ * @memberof perf
+ * @description Provides a second pass to convert an object containing options
+ * meant to be applied to an optimized image element. Note that this calls the
+ * "first-pass" `.optimizedAttrs()` method with the given settings object. This
+ * second pass most notably does the following two things: it allows for the
+ * use of `data-src` (in the case of a lazyloading usage), and it retains any
+ * width or height dimensions for the purpose HTML attribute usage.
+ * @param {Object} node An image node element.
+ * @param {Object} [opts] An object containing optimization options. The
+ * default is the list of attributes attached to the input node, along with the
+ * settings that come from the `.optimizedAttrs()` method
+ * (`{ link_encoded: false, preserve_aspect: true }`, unless the host is
+ * blacklisted, in which case, the object only contains
+ * `bypass_attributes: true`, a reserved property-value pair for knowing not to
+ * set height or width HTML attributes). The usable attributes (that get passed
+ * in to other Perf methods) are as follows:
+ * @param {Boolean} [opts.bypass_attributes] A boolean for whether
+ * attributes should be bypassed from the optimized image elemetnt.
+ * @param {Number|String} [opts.width] A number or string containing the number
+ * for the desired pixel width.
+ * @param {Number|String} [opts.height] A number or string containing the number
+ * for the desired pixel height.
+ * @param {Boolean} [opts.link_encoded] A boolean for whether the link
+ * should be base64-encoded.
+ * @param {Boolean} [opts.preserve_aspect] A boolean for whether the aspect
+ * ratio should be preserved, provded that only one dimension is given. If both
+ * dimensions are given, width is given priority. If both dimensions are set,
+ * this setting is ignored.
+ * @param {Number|String} [opts.quality] A number or string containing the
+ * number for the desired quality, on a scale from 1 (worst) to 100 (best).
+ * @param {String} [opts.format] A string containing the desired file format.
+ * Options include jpg, png, and webp.
+ * @return {Object} A second-pass object containing attributes to apply to an
+ * image node.
+ * @returns {Object} An object containing the second-pass optimized form of
+ * attributes, including the original node attributes, with some or all that may
+ * be overridden by the input options, as well as support for `data-src` and
+ * dimension* attributes.
+ * @example
+ * const Perf = require("moov_perf");
+ * let perf = new Perf("cheerio");
+ * let bingTag = tag("img", {src: "http://www.bing.com/selfie.jpg"});
+ * console.log(perf.optimizeImageAttribs(bingTag, {height: 300}));
+ * // => Returns: { src: '//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fselfie.jpg&amp;linkEncoded=0&amp;height=300&amp;preserve_aspect=1&amp;preserve_aspect=1', height: 300}
+ * @example
+ * let perf = new Perf("cheerio");
+ * let moovTag = tag("img", {src: "http://www.moovweb.com/selfie.jpg"});
+ * perf.ignore("http://www.moovweb.com/");
+ * console.log(perf.optimizeImageAttribs(moovTag, {height: 300}));
+ * // => Returns: { src: 'http://www.moovweb.com/selfie.jpg', height: 300 }
  */
 Perf.prototype.optimizeImageAttribs = function (node, opts) {
     if (node === undefined || typeof(node.attribs) === undefined) {
@@ -260,12 +438,10 @@ Perf.prototype.optimizeImageAttribs = function (node, opts) {
     if (node.attribs['data-src']) {
         clone_attribs['data-src'] = optimized_attribs.src;
     }
-    // If we are bypassing attributes (the image is    blacklisted or the image has explicitly been bypassed)
-    //        Just return the opt_attributs as they are now
-    // Otherwise,
-    //        If the user specified the width/height of the image
-    //            Then set those attributes on the node for faster browser rendering
     if (optimized_attribs.bypass_attributes !== true) {
+        // If the user specified the width/height of the image with attributes
+        // not bypassed, set them directly on the node for faster browser
+        // rendering
         if (optimized_attribs.width !== undefined) {
             clone_attribs.width = optimized_attribs.width;
         }
@@ -276,25 +452,57 @@ Perf.prototype.optimizeImageAttribs = function (node, opts) {
     return clone_attribs;
 };
 
-// map of blacklisted domains
 /**
- * Get blacklisted domains
- * @returns {Object.&lt;string, Object>} Return a map of all domains currently being ignored.
+ * @method ignored
+ * @summary moov_perf
+ * @memberof perf
+ * @description View the Perf instance's blacklisted domains, which are the
+ * domains that do not get rewritten to reference Moovweb's image optimization
+ * domain. Domains added to this list via the `.ignore()` method will strip off
+ * the protocol and any trailing path.
+ * @returns {Object} An object containing all domains currently being ignored.
  * @example
- * perf.ignored()
- * => 'http://www.moovweb.com/'
+ * const Perf = require("moov_perf");
+ * let perf = new Perf(cheerio);
+ * perf.ignore("http://www.google.com/");
+ * perf.ignore("http://www.bing.com");
+ * perf.ignore("http://www.yahoo.com/image.jpg");
+ * perf.ignored();
+ * // => Returns: {
+ * //      "www.google.com": true,
+ * //      "www.bing.com": true,
+ * //      "www.yahoo.com": true
+ * //    }
  */
 Perf.prototype.ignored = function() {
     return this.blacklist;
 };
 
-// Add this domain to the blacklist
 /**
- * Add domain to the ignore list. When perf.selector selects an image tag,
- it will not rewrite the image source for any images included in the ignored list.
- * @param {string} domain domain string
+ * @method ignore
+ * @summary moov_perf
+ * @memberof perf
+ * @description Add domain to the Perf instance's blacklist. Thus, when using
+ * any of the image optimization methods for a given Cheerio object selector, it
+ * will specifically avoid rewriting the image source for any domains included
+ * in the ignored list. This method will strip off the protocol, as well as any
+ * trailing path.
+ * @param {String} domain A string for the domain to ignore.
+ * @returns {Object} The original Perf instance.
  * @example
- * perf.ignore('http://www.moovweb.com/')
+ * const Perf = require("moov_perf");
+ * let perf = new Perf(cheerio);
+ * perf.ignore("http://www.google.com/");
+ * // => Returns: The Perf object instance assigned to `perf`
+ *
+ * perf.ignore("http://www.bing.com");
+ * perf.ignore("http://www.yahoo.com/image.jpg");
+ * perf.ignored();
+ * // => Returns: {
+ * //      "www.google.com": true,
+ * //      "www.bing.com": true,
+ * //      "www.yahoo.com": true
+ * //    }
  */
 Perf.prototype.ignore = function(domain) {
     let valid = parseUrl(domain, false, true);
@@ -315,7 +523,7 @@ module.exports = Perf;
 
 
       <div class="timestamp">
-          <i>Last updated Wed Nov 02 2016 17:49:35 GMT+0000 (UTC)</i>
+          <i>Last updated Fri Nov 04 2016 23:25:12 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
