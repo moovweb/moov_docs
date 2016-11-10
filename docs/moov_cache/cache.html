@@ -1,0 +1,688 @@
+<body>
+
+<div class="split-container">
+  <div data-section="accordion" id="content-nav" class="module-nav media">
+    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_cache</div><div class='sidebar-body'><a href='/modules/moov_cache/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="cache" class="L1">cache Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="cache#.enable" class="L1">.enable()</a></li><li data-type='method'><a href="cache#.enable_for" class="L1">.enable_for()</a></li><li data-type='method'><a href="cache#.force" class="L1">.force()</a></li><li data-type='method'><a href="cache#.force" class="L1">.force()</a></li><li data-type='method'><a href="cache#" class="L1">.html()</a></li></ul></div></div></div>
+  </div>
+
+  <div id="main" class="module-content data">
+      
+      <div class="breadcrumbs">
+        <a href="/">Home</a>
+        &raquo; <a href="/docs">Documentation</a>
+        &raquo; <a href="/modules/moov_cache/index">moov_cache</a>
+        &raquo; cache Namespace
+      </div>
+      <h1 class="page-title">cache Namespace</h1>
+      
+
+      
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <p class="description">A namespace containing methods for caching purposes.</p>
+            <hr />
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+        
+            
+
+    
+
+    <h2 class="name" id=".enable">
+        .enable<span class="signature">()</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_cache">moov_cache</div>
+            
+            <a href="moov_cache_js#line14">Source (L14)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Enables caching for the response, provided that the origin
+response allows for caching.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    `undefined`
+</p>
+
+
+    
+
+
+    <h3>Example</h3>
+    
+    <pre><code class="language-javascript">let cache = new Cache(fns, $, env);
+cache.enable();
+// => Result: the response is cached if the desktop response is cached; or
+//    caching is ignored if the desktop response is not cached.</code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id=".enable_for">
+        .enable_for<span class="signature">(seconds)</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_cache">moov_cache</div>
+            
+            <a href="moov_cache_js#line31">Source (L31)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Enables caching for the response for a specified period of time,
+provided that the origin response allows for caching.
+</p>
+
+
+
+
+
+
+
+
+
+    <h3>Parameters</h3>
+    <div class="table-wrapper">
+      
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  
+                  <code>seconds</code>
+                  
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                
+                A number or string containing the number for
+the amount of time in seconds for which to cache the response.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    `undefined`
+</p>
+
+
+    
+
+
+    <h3>Example</h3>
+    
+    <pre><code class="language-javascript">let cache = new Cache(fns, $, env);
+cache.enable_for(3300);
+// => Result: the response is cached for 3300 seconds (via the Cache-Time
+//    header) if the desktop response is cached; or caching is ignored if the
+//    desktop response is not cached.</code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id=".force">
+        .force<span class="signature">()</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_cache">moov_cache</div>
+            
+            <a href="moov_cache_js#line52">Source (L52)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Enables caching for the response, regardless of whether the
+origin response allows for caching.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    `undefined`
+</p>
+
+
+    
+
+
+    <h3>Example</h3>
+    
+    <pre><code class="language-javascript">let cache = new Cache(fns, $, env);
+cache.force();
+// => Result: the response is cached.</code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id=".force">
+        .force<span class="signature">(seconds)</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_cache">moov_cache</div>
+            
+            <a href="moov_cache_js#line68">Source (L68)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Enables caching for the response for a specified period of
+time, regardless of whether the origin response allows for caching.
+</p>
+
+
+
+
+
+
+
+
+
+    <h3>Parameters</h3>
+    <div class="table-wrapper">
+      
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  
+                  <code>seconds</code>
+                  
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+|
+
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                
+                A number or string containing the number for
+the amount of time in seconds for which to force cache the repsonse.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    `undefined`
+</p>
+
+
+    
+
+
+    <h3>Example</h3>
+    
+    <pre><code class="language-javascript">let cache = new Cache(fns, $, env);
+cache.force_for(3300);
+// => Result: the response is cached for 3300 seconds (via the Cache-Time
+//    header).</code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+            
+
+    
+
+    <h2 class="name" id="">
+        .html<span class="signature">(tag, enc)</span>
+        
+          <small class="line-source">
+            
+              <div class="mw-banner moov_cache">moov_cache</div>
+            
+            <a href="moov_cache_js#line96">Source (L96)</a>
+          </small>
+        
+    </h2>
+
+
+
+
+<p class="description">
+    Sets up HTML responses so that content (matching a given
+selector) passed in is fetched as needed, but still allows the remainder of
+the HTML response to be cached. Works in conjunction with Moovweb's
+cachify.js (client-side asset JavaScript library). Note: This functionality
+is experimental.
+</p>
+
+
+
+
+
+
+
+
+
+    <h3>Parameters</h3>
+    <div class="table-wrapper">
+      
+
+<table class="table params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name">
+                  
+                  <code>tag</code>
+                  
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                
+                A string for a CSS selector representing the dynamic
+elements on the page that need to be fetched.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name">
+                  
+                  <code>enc</code>
+                  
+                </td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            <td class="description last">
+                
+                A string for the encoding, defaulted to "utf-8".</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3>Return Value</h3>
+
+        
+<p class="param-desc">
+    `undefined`, provided that the original page is
+requested; or an array of strings for HTML elements to be re-fetched, if the
+flagged re-fetching version of the page is requested (indicated by
+a "_mw_cached_fragments=true" query parameter).
+</p>
+
+
+    
+
+
+    <h3>Example</h3>
+    
+    <pre><code class="language-javascript">// In index.js ("html" content-type conditional check)
+const Cache = require("moov_cache");
+let cache = new Cache(fns, $, env);
+let cache_array = cache.html(".bing, .google", "utf-8");
+let matcher = '_mw_cached_fragments=true';
+if (env.path.indexOf(matcher) >= 0) {
+  return { body: cache_array, htmlparsed: false };
+}
+// => HTML input:
+//    &lt;body>
+//      &lt;img class="google" src="http://www.google.com/img.jpeg" alt="selfie">
+//      &lt;img class="bing" src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => HTML response output (original page):
+//    &lt;body>
+//      &lt;span data-cache-hold="1">&lt;/span>
+//      &lt;span data-cache-hold="2">&lt;/span>
+//    &lt;/body>
+// => HTML dynamic output (original page):
+//    &lt;body>
+//      &lt;img class="google" src="http://www.google.com/img.jpeg" alt="selfie">
+//      &lt;img class="bing" src="http://www.bing.com/img.jpeg" alt="selfie">
+//    &lt;/body>
+// => Returns (flagged re-fetch response):
+//    [
+//      "&lt;img class=\"google\" src=\"http://www.google.com/img.jpeg\" alt=\"selfie\">",
+//      "&lt;img class=\"bing\" src=\"http://www.bing.com/img.jpeg\" alt=\"selfie\">"
+//    ]</code></pre>
+
+
+
+
+<p>
+  <a href="#top">Back to top</a>
+</p>
+
+<hr />
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+      <div class="timestamp">
+          <i>Last updated Thu Nov 10 2016 20:13:10 GMT+0000 (UTC)</i>
+      </div>
+  </div>
+</div>
+</body>

@@ -2,7 +2,7 @@
 
 <div class="split-container">
   <div data-section="accordion" id="content-nav" class="module-nav media">
-    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_cache</div><div class='sidebar-body'><a href='/modules/moov_cache/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="module_moov_cache_Cache" class="L1">Cache Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="module_moov_cache_Cache#enable" class="L1">.enable()</a></li><li data-type='method'><a href="module_moov_cache_Cache#enable_for" class="L1">.enable_for()</a></li><li data-type='method'><a href="module_moov_cache_Cache#force" class="L1">.force()</a></li><li data-type='method'><a href="module_moov_cache_Cache#force_for" class="L1">.force_for()</a></li><li data-type='method'><a href="module_moov_cache_Cache#html" class="L1">.html()</a></li></ul></div><div class='module'><a href="module_moov_cache">moov_cache</a></div></div></div>
+    <div class="module-sidebar" id="content-sidebar"><div class='sidebar-head'>moov_cache</div><div class='sidebar-body'><a href='/modules/moov_cache/index' class='L1'>README</a><div class='L1-container'><div class='L1-button'><a href="cache" class="L1">cache Namespace</a></div><ul class='methods L1-content'><li data-type='method'><a href="cache#.enable" class="L1">.enable()</a></li><li data-type='method'><a href="cache#.enable_for" class="L1">.enable_for()</a></li><li data-type='method'><a href="cache#.force" class="L1">.force()</a></li><li data-type='method'><a href="cache#.force" class="L1">.force()</a></li><li data-type='method'><a href="cache#" class="L1">.html()</a></li></ul></div></div></div>
   </div>
 
   <div id="main" class="module-content data">
@@ -23,115 +23,193 @@
     
     <section>
         <article>
-            <pre class="source"><code class="language-javascript">'use strict';
-/**
- * @module moov_cache
+            <pre class="source"><code class="language-javascript">/**
+ * A namespace containing methods for caching purposes.
+ * @namespace cache
  */
 
-/**
- * @class
- * @param {Object} fns Functions.
- * @param {Object} selector Moov_cheerio.
- * @param {Object} env Env.
- */
+'use strict';
+
 function Cache(fns,selector,env) {
-	this.export = fns.export;
-	this.selector = selector;
-	this.path = (env === undefined) ? '/' : env.path;
+    this.export = fns.export;
+    this.selector = selector;
+    this.path = (env === undefined) ? '/' : env.path;
 }
 
 /**
- * Enables the caching header for the page.
+ * @method enable
+ * @summary moov_cache
+ * @memberof cache
+ * @description Enables caching for the response, provided that the origin
+ * response allows for caching.
+ * @return {undefined} `undefined`
+ * @example
+ * let cache = new Cache(fns, $, env);
+ * cache.enable();
+ * // => Result: the response is cached if the desktop response is cached; or
+ * //    caching is ignored if the desktop response is not cached.
  */
 Cache.prototype.enable = function() {
-	this.export('Cache','true');
+    this.export('Cache', 'true');
 };
 
 /**
- * Enable caching of things for a specified period of time.
- * @param {number} seconds Time in secs.
+ * @method enable_for
+ * @summary moov_cache
+ * @memberof cache
+ * @description Enables caching for the response for a specified period of time,
+ * provided that the origin response allows for caching.
+ * @param {Number|String} seconds A number or string containing the number for
+ * the amount of time in seconds for which to cache the response.
+ * @return {undefined} `undefined`
+ * @example
+ * let cache = new Cache(fns, $, env);
+ * cache.enable_for(3300);
+ * // => Result: the response is cached for 3300 seconds (via the Cache-Time
+ * //    header) if the desktop response is cached; or caching is ignored if the
+ * //    desktop response is not cached.
  */
 Cache.prototype.enable_for = function(seconds) {
-	this.enable();
-	this.export('Cache-Time',seconds);
+    this.enable();
+    this.export('Cache-Time', seconds);
 };
 
 /**
- * Add a forced caching header to the page.
+ * @method force
+ * @summary moov_cache
+ * @memberof cache
+ * @description Enables caching for the response, regardless of whether the
+ * origin response allows for caching.
+ * @return {undefined} `undefined`
+ * @example
+ * let cache = new Cache(fns, $, env);
+ * cache.force();
+ * // => Result: the response is cached.
  */
 Cache.prototype.force = function() {
-	this.export('Cache','force');
-
+    this.export('Cache', 'force');
 };
 
 /**
- * Force caching of things for a specified period of time in Moovweb's cache only.
- * @param {number} seconds Time in secs.
+ * @method force
+ * @summary moov_cache
+ * @memberof cache
+ * @description Enables caching for the response for a specified period of
+ * time, regardless of whether the origin response allows for caching.
+ * @param {Number|String} seconds A number or string containing the number for
+ * the amount of time in seconds for which to force cache the repsonse.
+ * @return {undefined} `undefined`
+ * @example
+ * let cache = new Cache(fns, $, env);
+ * cache.force_for(3300);
+ * // => Result: the response is cached for 3300 seconds (via the Cache-Time
+ * //    header).
  */
 Cache.prototype.force_for = function(seconds) {
-	this.force();
-	this.export('Cache-Time',seconds);
+    this.force();
+    this.export('Cache-Time', seconds);
 };
 
 function dynamic_section(tag,selector) {
-	selector('html').find(tag).each(function(i,elem) {
-			let text = '&lt;span data-cache-hold=' + (i+1) +'>&lt;/span>';
-			selector(elem).after(text);
-			selector('cachebox').append(elem);
-		});
+    selector('html').find(tag).each(function(i,elem) {
+        let text = '&lt;span data-cache-hold=' + (i+1) +'>&lt;/span>';
+        selector(elem).after(text);
+        selector('cachebox').append(elem);
+    });
 }
 
 /**
- * Set up the page so that content you label dynamic is fetched as needed, but still allows the static section of the page to be cached. 
- * @param {string} tag Html tag.
- * @param {string} enc Encoding.
+ * @method html
+ * @summary moov_cache
+ * @memberof cache
+ * @description Sets up HTML responses so that content (matching a given
+ * selector) passed in is fetched as needed, but still allows the remainder of
+ * the HTML response to be cached. Works in conjunction with Moovweb's
+ * cachify.js (client-side asset JavaScript library). Note: This functionality
+ * is experimental.
+ * @param {String} tag A string for a CSS selector representing the dynamic
+ * elements on the page that need to be fetched.
+ * @param {String} enc A string for the encoding, defaulted to "utf-8".
+ * @return {undefined|Array} `undefined`, provided that the original page is
+ * requested; or an array of strings for HTML elements to be re-fetched, if the
+ * flagged re-fetching version of the page is requested (indicated by
+ * a "_mw_cached_fragments=true" query parameter).
+ * @example
+ * // In index.js ("html" content-type conditional check)
+ * const Cache = require("moov_cache");
+ * let cache = new Cache(fns, $, env);
+ * let cache_array = cache.html(".bing, .google", "utf-8");
+ * let matcher = '_mw_cached_fragments=true';
+ * if (env.path.indexOf(matcher) >= 0) {
+ *   return { body: cache_array, htmlparsed: false };
+ * }
+ * // => HTML input:
+ * //    &lt;body>
+ * //      &lt;img class="google" src="http://www.google.com/img.jpeg" alt="selfie">
+ * //      &lt;img class="bing" src="http://www.bing.com/img.jpeg" alt="selfie">
+ * //    &lt;/body>
+ * // => HTML response output (original page):
+ * //    &lt;body>
+ * //      &lt;span data-cache-hold="1">&lt;/span>
+ * //      &lt;span data-cache-hold="2">&lt;/span>
+ * //    &lt;/body>
+ * // => HTML dynamic output (original page):
+ * //    &lt;body>
+ * //      &lt;img class="google" src="http://www.google.com/img.jpeg" alt="selfie">
+ * //      &lt;img class="bing" src="http://www.bing.com/img.jpeg" alt="selfie">
+ * //    &lt;/body>
+ * // => Returns (flagged re-fetch response):
+ * //    [
+ * //      "&lt;img class=\"google\" src=\"http://www.google.com/img.jpeg\" alt=\"selfie\">",
+ * //      "&lt;img class=\"bing\" src=\"http://www.bing.com/img.jpeg\" alt=\"selfie\">"
+ * //    ]
  */
 Cache.prototype = function(tag,enc) {
-	let self = this;
+    let self = this;
 
-	// Set encoding
-	let encoding;
-	if(enc === undefined) {
-		encoding = 'utf-8';
-	} else {
-		encoding = enc;
-	}
-	// Export encoding to env
-	this.export('Content-Type-Charset',encoding);
+    // Set encoding
+    let encoding;
+    if (enc === undefined) {
+        encoding = 'utf-8';
+    } else {
+        encoding = enc;
+    }
+    // Export encoding to env
+    this.export('Content-Type-Charset',encoding);
 
-	let matcher = '_mw_cached_fragments=true';
+    let matcher = '_mw_cached_fragments=true';
 
-	// Add cachebox tag after &lt;/html>
-	this.selector('html').after('&lt;cachebox>&lt;/cachebox>');
+    // Add cachebox tag after &lt;/html>
+    this.selector('html').after('&lt;cachebox>&lt;/cachebox>');
 
-	// Call dynamic_section and put stuff tagged into cachebox
-	if(tag !== undefined) {
-		dynamic_section(tag,this.selector);
-	}
+    // Call dynamic_section and put stuff tagged into cachebox
+    if (tag !== undefined) {
+        dynamic_section(tag,this.selector);
+    }
 
-	// Here we determine if we are doing a dynamic fragment hit, or just our cachable static hit
-	if(this.path.indexOf(matcher) >= 0) {
-		// This is a fragment/dynamic hit! Time to jsonify!
-		let json_array = [];
-		self.selector('cachebox').find(tag).each(function(i,elem) {
-			json_array[i] = self.selector(elem).toString();
-		});
-		return JSON.stringify(json_array);
-	} else {
-		// This must be a static hit
-		// If we have anything in the cache box, then we assume that they want to cache the static part.
-		if(self.selector('cachebox').children().length > 0) {
-			// This only happens if there is something to cache!
-			this.force();
-		}
+    // Here we determine if we are doing a dynamic fragment hit, or just our cachable static hit
+    if (this.path.indexOf(matcher) >= 0) {
+        // This is a fragment/dynamic hit! Time to jsonify!
+        let json_array = [];
+        self.selector('cachebox').find(tag).each(function(i,elem) {
+            json_array[i] = self.selector(elem).toString();
+        });
+        return JSON.stringify(json_array);
+    } else {
+        // This must be a static hit
+        // If we have anything in the cache box, then we assume that they want to cache the static part.
+        if (self.selector('cachebox').children().length > 0) {
+            // This only happens if there is something to cache!
+            this.force();
+        }
 
-		// Okay, no matter what, during a static hit, we want to delete everything in the cachebox.
-		this.selector('cachebox').remove();
-	}
+        // Okay, no matter what, during a static hit, we want to delete everything in the cachebox.
+        this.selector('cachebox').remove();
+    }
 };
 
-
-module.exports = Cache;</code></pre>
+module.exports = Cache;
+</code></pre>
         </article>
     </section>
 
@@ -140,7 +218,7 @@ module.exports = Cache;</code></pre>
 
 
       <div class="timestamp">
-          <i>Last updated Thu Nov 10 2016 20:03:00 GMT+0000 (UTC)</i>
+          <i>Last updated Thu Nov 10 2016 20:13:10 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
