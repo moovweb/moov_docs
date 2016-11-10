@@ -194,7 +194,7 @@ check should not include any protocols or paths.
     <h3>Example</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 perf.ignore("http://www.google.com/");
 perf.blacklistContains("www.google.com");
 // => Returns: true
@@ -325,7 +325,7 @@ trailing path.
     <h3>Example</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 perf.ignore("http://www.google.com/");
 // => Returns: The Perf object instance assigned to `perf`
 
@@ -408,7 +408,7 @@ the protocol and any trailing path.
     <h3>Example</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 perf.ignore("http://www.google.com/");
 perf.ignore("http://www.bing.com");
 perf.ignore("http://www.yahoo.com/image.jpg");
@@ -804,12 +804,12 @@ image node.
     <h3>Examples</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 perf.ignore("www.moovweb.com");
 perf.optimizedAttrs("http://www.moovweb.com/img.jpg", {height: 300});
 Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }</code></pre>
 
-    <pre><code class="language-javascript">let perf = new Perf(cheerio);
+    <pre><code class="language-javascript">let perf = new Perf($);
 perf.ignore("www.moovweb.com");
 perf.optimizedAttrs("http://www.google.com/img.jpg", {height: 300});
 Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }</code></pre>
@@ -1215,12 +1215,12 @@ dimension* attributes.
     <h3>Examples</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf("cheerio");
+let perf = new Perf($);
 let bingTag = tag("img", {src: "http://www.bing.com/selfie.jpg"});
 console.log(perf.optimizeImageAttribs(bingTag, {height: 300}));
 // => Returns: { src: '//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fselfie.jpg&amp;linkEncoded=0&amp;height=300&amp;preserve_aspect=1&amp;preserve_aspect=1', height: 300}</code></pre>
 
-    <pre><code class="language-javascript">let perf = new Perf("cheerio");
+    <pre><code class="language-javascript">let perf = new Perf($);
 let moovTag = tag("img", {src: "http://www.moovweb.com/selfie.jpg"});
 perf.ignore("http://www.moovweb.com/");
 console.log(perf.optimizeImageAttribs(moovTag, {height: 300}));
@@ -1249,7 +1249,7 @@ console.log(perf.optimizeImageAttribs(moovTag, {height: 300}));
 
 
       <div class="timestamp">
-          <i>Last updated Fri Nov 04 2016 23:33:15 GMT+0000 (UTC)</i>
+          <i>Last updated Thu Nov 10 2016 20:03:01 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>

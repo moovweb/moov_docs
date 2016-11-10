@@ -59,7 +59,7 @@ function Perf(selector) {
      * object.
      * @example
      * const Perf = require("moov_perf");
-     * let perf = new Perf(cheerio);
+     * let perf = new Perf($);
      * $body.find("img").quality("88");
      * // => HTML input:
      * //    &lt;body>
@@ -72,7 +72,7 @@ function Perf(selector) {
      * //    &lt;/body>
      * @example
      * const Perf = require("moov_perf");
-     * let perf = new Perf(cheerio);
+     * let perf = new Perf($);
      * $body.find("img").quality("88").optimizeImg();
      * // => HTML input:
      * //    &lt;body>
@@ -134,7 +134,7 @@ function Perf(selector) {
      * object.
      * @example
      * const Perf = require("moov_perf");
-     * let perf = new Perf(cheerio);
+     * let perf = new Perf($);
      * $body.find("img").optimizeImg();
      * // => HTML input:
      * //    &lt;body>
@@ -147,7 +147,7 @@ function Perf(selector) {
      * //    &lt;/body>
      * @example
      * const Perf = require("moov_perf");
-     * let perf = new Perf(cheerio);
+     * let perf = new Perf($);
      * perf.ignore("http://www.google.com/");
      * $body.find("img").optimizeImg({
      *   height: 666,
@@ -168,7 +168,7 @@ function Perf(selector) {
      * //    &lt;/body>
      * @example
      * const Perf = require("moov_perf");
-     * let perf = new Perf(cheerio);
+     * let perf = new Perf($);
      * $body.find("img").optimizeImg({
      *   width: 777,
      *   quality: 88,
@@ -213,7 +213,7 @@ function parseUrl(src) {
  * @return {boolean} A boolean for whether the domain is in the blacklist.
  * @example
  * const Perf = require("moov_perf");
- * let perf = new Perf(cheerio);
+ * let perf = new Perf($);
  * perf.ignore("http://www.google.com/");
  * perf.blacklistContains("www.google.com");
  * // => Returns: true
@@ -275,12 +275,12 @@ function extend(defaults, opts) {
  * image node.
  * @example
  * const Perf = require("moov_perf");
- * let perf = new Perf(cheerio);
+ * let perf = new Perf($);
  * perf.ignore("www.moovweb.com");
  * perf.optimizedAttrs("http://www.moovweb.com/img.jpg", {height: 300});
  * Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }
  * @example
- * let perf = new Perf(cheerio);
+ * let perf = new Perf($);
  * perf.ignore("www.moovweb.com");
  * perf.optimizedAttrs("http://www.google.com/img.jpg", {height: 300});
  * Returns: { height: 300, bypass_attributes: true, src: 'http://www.moovweb.com/selfie.jpg' }
@@ -408,12 +408,12 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
  * dimension* attributes.
  * @example
  * const Perf = require("moov_perf");
- * let perf = new Perf("cheerio");
+ * let perf = new Perf($);
  * let bingTag = tag("img", {src: "http://www.bing.com/selfie.jpg"});
  * console.log(perf.optimizeImageAttribs(bingTag, {height: 300}));
  * // => Returns: { src: '//opt.moovweb.net/img?img=http%3A%2F%2Fwww.bing.com%2Fselfie.jpg&amp;linkEncoded=0&amp;height=300&amp;preserve_aspect=1&amp;preserve_aspect=1', height: 300}
  * @example
- * let perf = new Perf("cheerio");
+ * let perf = new Perf($);
  * let moovTag = tag("img", {src: "http://www.moovweb.com/selfie.jpg"});
  * perf.ignore("http://www.moovweb.com/");
  * console.log(perf.optimizeImageAttribs(moovTag, {height: 300}));
@@ -463,7 +463,7 @@ Perf.prototype.optimizeImageAttribs = function (node, opts) {
  * @returns {Object} An object containing all domains currently being ignored.
  * @example
  * const Perf = require("moov_perf");
- * let perf = new Perf(cheerio);
+ * let perf = new Perf($);
  * perf.ignore("http://www.google.com/");
  * perf.ignore("http://www.bing.com");
  * perf.ignore("http://www.yahoo.com/image.jpg");
@@ -491,7 +491,7 @@ Perf.prototype.ignored = function() {
  * @returns {Object} The original Perf instance.
  * @example
  * const Perf = require("moov_perf");
- * let perf = new Perf(cheerio);
+ * let perf = new Perf($);
  * perf.ignore("http://www.google.com/");
  * // => Returns: The Perf object instance assigned to `perf`
  *
@@ -523,7 +523,7 @@ module.exports = Perf;
 
 
       <div class="timestamp">
-          <i>Last updated Fri Nov 04 2016 23:33:15 GMT+0000 (UTC)</i>
+          <i>Last updated Thu Nov 10 2016 20:03:01 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>

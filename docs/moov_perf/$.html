@@ -411,7 +411,7 @@ object.
     <h3>Examples</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 $body.find("img").optimizeImg();
 // => HTML input:
 //    &lt;body>
@@ -424,7 +424,7 @@ $body.find("img").optimizeImg();
 //    &lt;/body></code></pre>
 
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 perf.ignore("http://www.google.com/");
 $body.find("img").optimizeImg({
   height: 666,
@@ -445,7 +445,7 @@ $body.find("img").optimizeImg({
 //    &lt;/body></code></pre>
 
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 $body.find("img").optimizeImg({
   width: 777,
   quality: 88,
@@ -592,7 +592,7 @@ object.
     <h3>Examples</h3>
     
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 $body.find("img").quality("88");
 // => HTML input:
 //    &lt;body>
@@ -605,7 +605,7 @@ $body.find("img").quality("88");
 //    &lt;/body></code></pre>
 
     <pre><code class="language-javascript">const Perf = require("moov_perf");
-let perf = new Perf(cheerio);
+let perf = new Perf($);
 $body.find("img").quality("88").optimizeImg();
 // => HTML input:
 //    &lt;body>
@@ -640,7 +640,7 @@ $body.find("img").quality("88").optimizeImg();
 
 
       <div class="timestamp">
-          <i>Last updated Fri Nov 04 2016 23:33:15 GMT+0000 (UTC)</i>
+          <i>Last updated Thu Nov 10 2016 20:03:01 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>

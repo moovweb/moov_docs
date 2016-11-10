@@ -31,18 +31,18 @@
       &raquo; moov_perf
     </div>
     <section class="readme">
-        <article><h1>moov_perf</h1><h1>Introduction</h1><p>moov_perf is a MoovJS Node module provides a number of methods to enhance
+        <article><h1>moov_perf</h1><h2>Introduction</h2><p>moov_perf is a MoovJS Node module that provides a number of methods to enhance
 performance on your Moovweb-transformed project site.</p>
 <h2>Documentation</h2><p>Perf should always be required first.</p>
 <pre class="prettyprint source"><code>const Perf = require(&quot;moov_perf&quot;);</code></pre><p>Perf extends an existing selector engine prototype. When instantiating the
 <code>perf</code> object, pass in the prototype of your selector engine (with Moovweb, this
-is the global <code>cheerio</code>). This gives you access to the Perf functions while
+is the global <code>$</code>). This gives you access to the Perf functions while
 modifying a selection, as well as a blacklist for domains you specifically do
 not wish to optimize while performing image optimizations.</p>
-<pre class="prettyprint source"><code>let perf = new Perf(cheerio);</code></pre><h2>Development</h2><h3>Quick Start</h3><pre class="prettyprint source"><code>$ cp .npmrc.example .npmrc
-$ npm install</code></pre><p>This will build the Node modules that moov_perf depends on and everything will
-be set up locally under the moov_perf folder. The npm-shrinkwrap.json file is
-used to version lock all dependencies.</p>
+<pre class="prettyprint source"><code>let perf = new Perf($);</code></pre><h2>Development</h2><h3>Quick Start</h3><pre class="prettyprint source"><code>$ cp .npmrc.example .npmrc
+$ npm install</code></pre><p>This will build the Node modules that moov_perf depends under the local
+moov_perf directory. The npm-shrinkwrap.json file is used to version-lock all
+dependencies.</p>
 <h3>Tests</h3><pre class="prettyprint source"><code>$ npm test</code></pre><h3>Run Locally via Node CLI</h3><pre class="prettyprint source"><code>$ node --harmony
 ...
 > var perf = require(&quot;./main.js&quot;);
@@ -56,7 +56,7 @@ used to version lock all dependencies.</p>
 
 
       <div class="timestamp">
-          <i>Last updated Fri Nov 04 2016 23:33:15 GMT+0000 (UTC)</i>
+          <i>Last updated Thu Nov 10 2016 20:03:01 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
