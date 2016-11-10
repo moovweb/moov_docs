@@ -237,13 +237,15 @@ function generate(type, title, docs, filename, resolveLinks) {
         html = helper.resolveLinks(html);// turn {@link foo} into <a href="foodoc.html">foo</a>
 
     }
-    html = html.replace(/\.html">\./g, "__KEEP_STRING_SAFE_0__"); // sidebar
-    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__"); // plaintext/examples
-    html = html.replace(/\.html</g, "__KEEP_STRING_SAFE_2__"); // title
+    html = html.replace(/\.html" class="/g, "__KEEP_STRING_SAFE_1__"); // sidebar link
+    html = html.replace(/\.html\(/g, "__KEEP_STRING_SAFE_2__"); // plaintext/examples
+    html = html.replace(/\.html">\s+/g, "__KEEP_STRING_SAFE_3__"); // title id 
+    html = html.replace(/\.html</g, "__KEEP_STRING_SAFE_4__"); // title text
     html = html.replace(/\.html/g, "");
-    html = html.replace(/__KEEP_STRING_SAFE_0__/g, ".html\">.");
-    html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
-    html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
+    html = html.replace(/__KEEP_STRING_SAFE_1__/g, ".html\" class=\"");
+    html = html.replace(/__KEEP_STRING_SAFE_2__/g, ".html(");
+    html = html.replace(/__KEEP_STRING_SAFE_3__/g, ".html\">");
+    html = html.replace(/__KEEP_STRING_SAFE_4__/g, ".html<");
     fs.writeFileSync(outpath, html, 'utf8');
 }
 
@@ -420,13 +422,15 @@ function buildNav(members) {
 
     nav += "</div>";
 
-    nav = nav.replace(/\.html">\./g, "__KEEP_STRING_SAFE_0__"); // sidebar
-    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_1__"); // plaintext/examples
-    nav = nav.replace(/\.html</g, "__KEEP_STRING_SAFE_2__"); // title
+    nav = nav.replace(/\.html" class="/g, "__KEEP_STRING_SAFE_1__"); // sidebar link
+    nav = nav.replace(/\.html\(/g, "__KEEP_STRING_SAFE_2__"); // plaintext/examples
+    nav = nav.replace(/\.html">\s+/gm, "__KEEP_STRING_SAFE_3__"); // title id 
+    nav = nav.replace(/\.html</g, "__KEEP_STRING_SAFE_4__"); // title text
     nav = nav.replace(/\.html/g,'');
-    nav = nav.replace(/__KEEP_STRING_SAFE_0__/g, ".html\">.");
-    nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html(");
-    nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html<");
+    nav = nav.replace(/__KEEP_STRING_SAFE_1__/g, ".html\" class=\"");
+    nav = nav.replace(/__KEEP_STRING_SAFE_2__/g, ".html(");
+    nav = nav.replace(/__KEEP_STRING_SAFE_3__/g, ".html\">");
+    nav = nav.replace(/__KEEP_STRING_SAFE_4__/g, ".html<");
     nav += "</div>";
     return nav;
 }
