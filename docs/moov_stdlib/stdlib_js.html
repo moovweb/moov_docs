@@ -234,7 +234,8 @@ module.exports = function(ctxObj) {
      * be text only. For feeds and other XML content (documents that don't
      * consist of HTML), set this to true. Default: false.
      * @param {Boolean} [opts.decodeEntities] A boolean for whether entities
-     * within the document will not be decoded. Defaults to true.
+     * within the document will be _encoded_ (i.e., whether decoded entities
+     * should _not_ be retained). Defaults to true.
      * @param {Boolean} [opts.lowerCaseTags] A boolean for whether all tags
      * should be lowercased. If `xmlMode` is disabled, this defaults to true.
      * @param {Boolean} [opts.lowerCaseAttributeNames] A boolean for whether
@@ -261,6 +262,10 @@ module.exports = function(ctxObj) {
      * the global variables set.
      * @example
      * fns.init$(body);
+     * // => HTML input:
+     * //    &lt;html>
+     * //      &lt;body>&amp;&lt;/body>
+     * //    &lt;/html>
      * // => Returns: {
      * //      $: $,
      * //      scoped$: scoped$,
@@ -269,6 +274,30 @@ module.exports = function(ctxObj) {
      * //      head: $head,
      * //      body: $body
      * //    }
+     * // => HTML input:
+     * //    &lt;html>
+     * //      &lt;body>&amp;amp;&lt;/body>
+     * //    &lt;/html>
+     * // => Result: The document is parsed and usable by Cheerio.
+     * @example
+     * fns.init$(body, {decodeEntities: false});
+     * // => HTML input:
+     * //    &lt;html>
+     * //      &lt;body>&amp;&lt;/body>
+     * //    &lt;/html>
+     * // => Returns: {
+     * //      $: $,
+     * //      scoped$: scoped$,
+     * //      root: $root,
+     * //      html: $html,
+     * //      head: $head,
+     * //      body: $body
+     * //    }
+     * // => HTML input (stays the same):
+     * //    &lt;html>
+     * //      &lt;body>&amp;&lt;/body>
+     * //    &lt;/html>
+     * // => Result: The document is parsed and usable by Cheerio.
      */
     stdlib.init$ = function(body, opts) {
         var $ = cheerio.load(body, opts);
@@ -299,7 +328,7 @@ module.exports = function(ctxObj) {
 
 
       <div class="timestamp">
-          <i>Last updated Thu Nov 10 2016 21:56:02 GMT+0000 (UTC)</i>
+          <i>Last updated Tue Nov 15 2016 22:28:30 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>

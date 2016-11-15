@@ -2020,7 +2020,8 @@ consist of HTML), set this to true. Default: false.</td>
             <td class="description last">
                 <em>Optional.</em>
                 A boolean for whether entities
-within the document will not be decoded. Defaults to true.</td>
+within the document will be _encoded_ (i.e., whether decoded entities
+should _not_ be retained). Defaults to true.</td>
         </tr>
 
     
@@ -2264,9 +2265,13 @@ the global variables set.
     
 
 
-    <h3>Example</h3>
+    <h3>Examples</h3>
     
     <pre><code class="language-javascript">fns.init$(body);
+// => HTML input:
+//    &lt;html>
+//      &lt;body>&amp;&lt;/body>
+//    &lt;/html>
 // => Returns: {
 //      $: $,
 //      scoped$: scoped$,
@@ -2274,7 +2279,31 @@ the global variables set.
 //      html: $html,
 //      head: $head,
 //      body: $body
-//    }</code></pre>
+//    }
+// => HTML input:
+//    &lt;html>
+//      &lt;body>&amp;amp;&lt;/body>
+//    &lt;/html>
+// => Result: The document is parsed and usable by Cheerio.</code></pre>
+
+    <pre><code class="language-javascript">fns.init$(body, {decodeEntities: false});
+// => HTML input:
+//    &lt;html>
+//      &lt;body>&amp;&lt;/body>
+//    &lt;/html>
+// => Returns: {
+//      $: $,
+//      scoped$: scoped$,
+//      root: $root,
+//      html: $html,
+//      head: $head,
+//      body: $body
+//    }
+// => HTML input (stays the same):
+//    &lt;html>
+//      &lt;body>&amp;&lt;/body>
+//    &lt;/html>
+// => Result: The document is parsed and usable by Cheerio.</code></pre>
 
 
 
@@ -4898,7 +4927,7 @@ environment. In production, this is specifically used for writing in the
 
 
       <div class="timestamp">
-          <i>Last updated Thu Nov 10 2016 21:56:02 GMT+0000 (UTC)</i>
+          <i>Last updated Tue Nov 15 2016 22:28:30 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
