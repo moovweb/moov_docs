@@ -252,7 +252,7 @@ function extend(defaults, opts) {
  * @param {String} domain A string for the image source.
  * @param {Object} [opts] An object containing optimization options. The
  * default options object is `{ link_encoded: false, preserve_aspect: true }`,
- * unless the host is blacklisted (in which case, the object only contains 
+ * unless the host is blacklisted (in which case, the object only contains
  * `bypass_attributes: true`, a reserved property-value pair for knowing not to
  * set height or width HTML attributes). The usable attributes are as follows:
  * @param {Boolean} [opts.bypass_attributes] A boolean for whether
@@ -320,7 +320,8 @@ Perf.prototype.optimizedAttrs = function (src, opts) {
         // of the image to be optimized
         let opt_url = url.format({
             host: moov_opt_host,
-            search: '?img=' + img_path
+            search: '?img=' + img_path,
+            slashes: true
         });
 
         // We concatenate these in order instead of using param so the same image
@@ -523,7 +524,7 @@ module.exports = Perf;
 
 
       <div class="timestamp">
-          <i>Last updated Wed Jan 18 2017 01:33:48 GMT+0000 (UTC)</i>
+          <i>Last updated Mon Feb 26 2018 22:51:26 GMT+0000 (UTC)</i>
       </div>
   </div>
 </div>
